@@ -2,6 +2,7 @@ package com.thepoweroftether.interactivetraining;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+
         final EditText fullnameEdit = (EditText) findViewById(R.id.fullname_edit);
         final EditText usernameEdit = (EditText) findViewById(R.id.username_edit);
         final EditText passwordEdit = (EditText) findViewById(R.id.password_edit);
@@ -25,7 +29,6 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText birthdateEdit = (EditText) findViewById(R.id.birthdate_edit);
         Button createButton = (Button) findViewById(R.id.create_button);
 
-        // TODO Soal 3 Pasang listener pada createButton untuk melakukan insert pada database
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,6 +80,14 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT)
                             .show();
                 }
+            }
+        });
+
+        Button backButton = (Button) findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

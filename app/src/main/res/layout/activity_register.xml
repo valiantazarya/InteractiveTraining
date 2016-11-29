@@ -13,66 +13,80 @@
     <TableRow>
         <TextView
             android:text="Full Name"
-            android:layout_width="0dp" />
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimary"/>
         <EditText
             android:id="@+id/fullname_edit"
             android:inputType="text|textCapWords"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_width="0dp" />
     </TableRow>
     <TableRow>
         <TextView
             android:text="Username"
-            android:layout_width="0dp" />
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimary" />
         <EditText
             android:id="@+id/username_edit"
             android:inputType="text"
-            android:layout_width="0dp" />
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimaryDark" />
     </TableRow>
     <TableRow>
         <TextView
             android:text="Password"
-            android:layout_width="0dp" />
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimary" />
         <EditText
             android:id="@+id/password_edit"
             android:inputType="textPassword"
-            android:layout_width="0dp" />
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimaryDark" />
     </TableRow>
     <TableRow>
         <TextView
             android:text="Confirm Password"
-            android:layout_width="0dp" />
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimary" />
         <EditText
             android:id="@+id/confirm_password_edit"
             android:inputType="textPassword"
-            android:layout_width="0dp" />
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimaryDark" />
     </TableRow>
     <TableRow>
         <TextView
             android:text="Email"
-            android:layout_width="0dp" />
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimary" />
         <EditText
             android:id="@+id/email_edit"
             android:inputType="textEmailAddress"
-            android:layout_width="0dp" />
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimaryDark" />
     </TableRow>
     <TableRow>
         <TextView
             android:text="Address"
-            android:layout_width="0dp" />
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimary" />
         <EditText
             android:id="@+id/address_edit"
             android:inputType="text|textMultiLine"
-            android:layout_width="0dp" />
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimaryDark" />
     </TableRow>
     <TableRow>
         <TextView
             android:text="Birthdate"
-            android:layout_width="0dp" />
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimary" />
         <EditText
             android:id="@+id/birthdate_edit"
             android:inputType="date"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"/>
     </TableRow>
     <TableRow>
         <Button
