@@ -17,4 +17,24 @@
             android:layout_height="wrap_content"
             android:text="Welcome Admin"/>
     </TableRow>
+    <TableRow
+        android:gravity="center"
+        android:layout_marginTop="25dp">
+        <Button
+            android:id="@+id/account_list_button"
+            android:text="Account List"
+            android:textColor="@color/colorBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_setting_button"/>
+
+        <Button
+            android:id="@+id/create_account_button"
+            android:text="Create Account"
+            android:textColor="@color/colorBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/login_setting_button"/>
+    </TableRow>
 </TableLayout>
