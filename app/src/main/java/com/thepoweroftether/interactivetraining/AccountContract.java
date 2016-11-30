@@ -20,9 +20,9 @@ public final class AccountContract {
             String.format("%s VARCHAR(40)", AccountEntry.COLUMN_NAME_USERNAME),
             String.format("%s VARCHAR(40)", AccountEntry.COLUMN_NAME_PASSWORD),
             String.format("%s VARCHAR(40)", AccountEntry.COLUMN_NAME_FULLNAME),
-            String.format("%s TEXT NOT NULL", AccountEntry.COLUMN_NAME_ADDRESS),
+            String.format("%s TEXT", AccountEntry.COLUMN_NAME_ADDRESS),
             String.format("%s VARCHAR(40)", AccountEntry.COLUMN_NAME_EMAIL),
-            String.format("%s TEXT NOT NULL", AccountEntry.COLUMN_NAME_BIRTHDATE)
+            String.format("%s VARCHAR(40)", AccountEntry.COLUMN_NAME_PHONE)
     );
 
     public static final String SQL_DELETE_ACCOUNTS = String.format(
@@ -40,7 +40,7 @@ public final class AccountContract {
         public static final String COLUMN_NAME_FULLNAME = "fullname";
         public static final String COLUMN_NAME_ADDRESS = "address";
         public static final String COLUMN_NAME_EMAIL = "email";
-        public static final String COLUMN_NAME_BIRTHDATE = "birthdate";
+        public static final String COLUMN_NAME_PHONE = "phone";
     }
 
     public static class AccountDbHelper extends SQLiteOpenHelper {
@@ -61,7 +61,7 @@ public final class AccountContract {
             values.put(AccountEntry.COLUMN_NAME_PASSWORD, "admin");
             values.put(AccountEntry.COLUMN_NAME_ADDRESS, "-");
             values.put(AccountEntry.COLUMN_NAME_EMAIL, "valiant.azarya@gmail.com");
-            values.put(AccountEntry.COLUMN_NAME_BIRTHDATE, "Date");
+            values.put(AccountEntry.COLUMN_NAME_PHONE, "-");
             db.insert(AccountEntry.TABLE_NAME, null, values);
         }
 

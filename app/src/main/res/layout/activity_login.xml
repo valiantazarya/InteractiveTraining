@@ -20,6 +20,7 @@
     <EditText
         android:id="@+id/username_edit"
         android:inputType="text"
+        android:layout_marginTop="50px"
         android:layout_width="512px"
         android:layout_height="wrap_content"
         android:hint="Username"/>
