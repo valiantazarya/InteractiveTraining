@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:useDefaultMargins="true"
+    android:alignmentMode="alignBounds"
+    android:columnOrderPreserved="false"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="12"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:text="Title"
+        android:layout_column="0"
+        android:layout_row="0"
+        android:layout_columnSpan="10"
+        android:layout_rowSpan="1"
+        android:layout_gravity="fill"
+        android:textSize="15dp" />
+    <TextView
+        android:id="@+id/txtCaption"
+        android:text="Caption"
+        android:layout_column="0"
+        android:layout_row="1"
+        android:layout_columnSpan="10"
+        android:layout_rowSpan="1"
+        android:layout_gravity="fill"
+        android:textSize="12dp" />
+
+    <Button
+        android:id="@+id/btnDownload"
+        android:text="Download"
+        android:textColor="#fff"
+        android:background="#1976D2"
+        android:layout_column="11"
+        android:layout_row="0"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="2"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btnOpen"
+        android:text="Open"
+        android:textColor="#fff"
+        android:background="#1B5E20"
+        android:layout_column="10"
+        android:layout_row="0"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="2" />
+
+
+
+</GridLayout>
