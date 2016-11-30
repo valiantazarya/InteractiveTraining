@@ -25,6 +25,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AdminActivity" />
+        <activity
+            android:name=".RegisterActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/LoginTheme">
+        </activity>
         <activity android:name=".LearningModule"></activity>
     </application>
 
