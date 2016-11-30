@@ -20,62 +20,98 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/fullname_edit"
-        android:inputType="text|textCapWords"
-        android:textColor="@color/colorPrimaryDark"
-        android:hint="Full Name"
-        android:layout_marginTop="50px"
-        android:layout_width="512px"
-        android:layout_height="wrap_content" />
+    <android.support.design.widget.TextInputLayout
+        android:gravity="center"
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/fullname_edit"
+            android:inputType="text|textCapWords"
+            android:textColor="@color/colorPrimaryDark"
+            android:hint="Full Name"
+            android:layout_marginTop="50px"
+            android:layout_width="512px"
+            android:layout_height="wrap_content" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/username_edit"
-        android:inputType="text"
-        android:layout_width="512px"
-        android:layout_height="wrap_content"
-        android:hint="Username"
-        android:textColor="@color/colorPrimaryDark" />
+    <android.support.design.widget.TextInputLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/username_edit"
+            android:inputType="text"
+            android:layout_width="512px"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            android:textColor="@color/colorPrimaryDark" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/password_edit"
-        android:inputType="textPassword"
-        android:layout_width="512px"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:textColor="@color/colorPrimaryDark" />
+    <android.support.design.widget.TextInputLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/password_edit"
+            android:inputType="textPassword"
+            android:layout_width="512px"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:textColor="@color/colorPrimaryDark" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/confirm_password_edit"
-        android:inputType="textPassword"
-        android:layout_width="512px"
-        android:layout_height="wrap_content"
-        android:hint="Confirm Password"
-        android:textColor="@color/colorPrimaryDark" />
+    <android.support.design.widget.TextInputLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/confirm_password_edit"
+            android:inputType="textPassword"
+            android:layout_width="512px"
+            android:layout_height="wrap_content"
+            android:hint="Confirm Password"
+            android:textColor="@color/colorPrimaryDark" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/email_edit"
-        android:inputType="textEmailAddress"
-        android:layout_width="512px"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        android:textColor="@color/colorPrimaryDark" />
+    <android.support.design.widget.TextInputLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/email_edit"
+            android:inputType="textEmailAddress"
+            android:layout_width="512px"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:textColor="@color/colorPrimaryDark" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/address_edit"
-        android:inputType="text|textMultiLine"
-        android:layout_width="512px"
-        android:layout_height="wrap_content"
-        android:hint="Address"
-        android:textColor="@color/colorPrimaryDark" />
+    <android.support.design.widget.TextInputLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/address_edit"
+            android:inputType="text|textMultiLine"
+            android:layout_width="512px"
+            android:layout_height="wrap_content"
+            android:hint="Address"
+            android:textColor="@color/colorPrimaryDark" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/phone_edit"
-        android:inputType="numberDecimal"
-        android:layout_width="512px"
-        android:layout_height="wrap_content"
-        android:hint="Phone"
-        android:textColor="@color/colorPrimaryDark"/>
+    <android.support.design.widget.TextInputLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/phone_edit"
+            android:inputType="numberDecimal"
+            android:layout_width="512px"
+            android:layout_height="wrap_content"
+            android:hint="Phone"
+            android:textColor="@color/colorPrimaryDark"/>
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/create_button"

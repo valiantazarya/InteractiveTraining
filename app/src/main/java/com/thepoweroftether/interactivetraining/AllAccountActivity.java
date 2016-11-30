@@ -40,8 +40,9 @@ public class AllAccountActivity extends ListActivity {
 
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_ACCOUNTS = "accounts";
-    private static final String TAG_ACCOUNT_ID = "account_id";
-    private static final String TAG_USERNAME = "name";
+    private static final String TAG_ACCOUNT_ID = "id";
+    private static final String TAG_USERNAME = "username";
+    private static final String TAG_FULLNAME = "fullname";
 
     JSONArray accounts = null;
 
@@ -61,7 +62,7 @@ public class AllAccountActivity extends ListActivity {
             List<Pair<String, String>> args = new ArrayList<Pair<String, String>>();
             JSONObject jsonObject = null;
             try {
-                jsonObject = jParser.makeHttpRequest(url_all_accounts, "GET", args);
+                jsonObject = jParser.makeHttpRequest(url_all_accounts, "POST", args);
             } catch (IOException e) {
                 Log.d("Networking", e.getLocalizedMessage());
             }
@@ -79,12 +80,14 @@ public class AllAccountActivity extends ListActivity {
 
                         String account_id = c.getString(TAG_ACCOUNT_ID);
                         String username = c.getString(TAG_USERNAME);
+                        String fullname = c.getString(TAG_FULLNAME);
 
                         HashMap<String, String> map =
                                 new HashMap<String, String>();
 
                         map.put(TAG_ACCOUNT_ID, account_id);
-                        map.put(TAG_USERNAME, username);
+                        map.put(TAG_USERNAME, username + " (" +fullname + ")");
+                        //map.put(TAG_FULLNAME, fullname);
 
                         accountList.add(map);
                     }

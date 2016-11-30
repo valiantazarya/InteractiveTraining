@@ -6,5 +6,6 @@ package com.thepoweroftether.interactivetraining;
 public class Server {
     public static final String URL = "http://192.168.0.35/gobs_training/";
 
-    public static final String readAccount = "read_member.php";
+    public static final String readAccount = "get_all_accounts.php";
+    public static final String createAccount = "create_account.php";
 }
