@@ -30,7 +30,7 @@
         <activity android:name=".AdminActivity" />
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/LoginTheme"
+            android:theme="@style/RegisterTheme"
             android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
         <activity android:name=".LearningModule"></activity>
