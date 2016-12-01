@@ -31,10 +31,10 @@
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/RegisterTheme"
-            android:windowSoftInputMode="stateVisible|adjustResize">
-        </activity>
-        <activity android:name=".LearningModule"></activity>
-        <activity android:name=".AllAccountActivity"></activity>
+            android:windowSoftInputMode="stateVisible|adjustResize"></activity>
+        <activity android:name=".LearningModule" />
+        <activity android:name=".AllAccountActivity" />
+        <activity android:name=".EditAccountActivity"></activity>
     </application>
 
 </manifest>

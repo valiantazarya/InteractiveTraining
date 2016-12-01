@@ -51,7 +51,7 @@ public class AllAccountActivity extends ListActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(AllAccountActivity.this);
-            pDialog.setMessage("Loading All Accounts");
+            pDialog.setMessage("Loading all accounts");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -86,8 +86,8 @@ public class AllAccountActivity extends ListActivity {
                                 new HashMap<String, String>();
 
                         map.put(TAG_ACCOUNT_ID, account_id);
-                        map.put(TAG_USERNAME, username + " (" +fullname + ")");
-                        //map.put(TAG_FULLNAME, fullname);
+                        map.put(TAG_USERNAME, username);
+                        map.put(TAG_FULLNAME, fullname);
 
                         accountList.add(map);
                     }
@@ -116,8 +116,8 @@ public class AllAccountActivity extends ListActivity {
                             AllAccountActivity.this,
                             accountList,
                             R.layout.list_account,
-                            new String[] {TAG_ACCOUNT_ID, TAG_USERNAME},
-                            new int[]{R.id.account_id, R.id.username}
+                            new String[] {TAG_ACCOUNT_ID, TAG_USERNAME, TAG_FULLNAME},
+                            new int[]{R.id.account_id, R.id.username_text, R.id.fullname_text}
                     );
                     setListAdapter(adapter);
                 }
@@ -134,18 +134,31 @@ public class AllAccountActivity extends ListActivity {
 
         new LoadAllAccount().execute();
 
-        ListView listView = getListView();
+        final ListView listView = getListView();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String account_id = ((TextView) view.findViewById(R.id.account_id)).getText().toString();
-                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                Intent i = new Intent(getApplicationContext(), EditAccountActivity.class);
 
                 i.putExtra(TAG_ACCOUNT_ID, account_id);
                 startActivityForResult(i, 100);
             }
         });
+
+        /*Button editButton = (Button) findViewById(R.id.edit_account_button);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String account_id = ((TextView) listView.findViewById(R.id.account_id)).getText().toString();
+                Intent i = new Intent(AllAccountActivity.this, EditAccountActivity.class);
+
+                i.putExtra(TAG_ACCOUNT_ID, account_id);
+                startActivityForResult(i, 100);
+                //startActivity(i);
+            }
+        });*/
         /*final ListView account_list = (ListView) findViewById(R.id.account_list);
         account_list.setAdapter(new AccountAdapter(
                 this,

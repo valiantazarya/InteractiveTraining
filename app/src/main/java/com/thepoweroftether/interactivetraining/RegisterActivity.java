@@ -174,11 +174,11 @@ public class RegisterActivity extends AppCompatActivity {
             try{
                 int success = jsonObject.getInt(TAG_SUCCESS);
                 if (success == 1){
-                    /*Toast.makeText(
-                            RegisterActivity.this,
+                    Toast.makeText(
+                            getApplicationContext(),
                             "Account registration success.",
                             Toast.LENGTH_SHORT)
-                            .show();*/
+                            .show();
                     finish();
                 }
                 else{
