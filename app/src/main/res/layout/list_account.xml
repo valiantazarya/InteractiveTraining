@@ -16,6 +16,10 @@
         android:visibility="gone"/>
 
     <TextView
+        android:id="@+id/usertype"
+        android:visibility="gone"/>
+
+    <TextView
         android:id="@+id/username_text"
         android:text="Title"
         android:layout_column="0"
@@ -39,6 +43,17 @@
         android:drawableLeft="@android:drawable/ic_menu_info_details"
         android:textColor="@color/colorPrimaryDark"
         android:layout_column="11"
+        android:layout_row="0"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="2"/>
+
+    <TextView
+        android:id="@+id/usertype_name"
+        android:drawableTint="@color/colorPrimaryDark"
+        android:drawableLeft="@android:drawable/ic_lock_lock"
+        android:text="Type"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_column="10"
         android:layout_row="0"
         android:layout_columnSpan="1"
         android:layout_rowSpan="2"/>

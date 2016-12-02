@@ -25,7 +25,7 @@ import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
     //Alert Message
-    public static String alertMessage = "Account registration successful.";
+    public static String alertMessage = "";
 
     private ProgressDialog pDialog;
     JSONParser jsonParser = new JSONParser();
@@ -73,12 +73,6 @@ public class RegisterActivity extends AppCompatActivity {
                 } else{
                     if (password.equals(confirmPassword)){
                         new CreateNewAccount().execute();
-
-                        Toast.makeText(
-                                getApplicationContext(),
-                                alertMessage,
-                                Toast.LENGTH_SHORT)
-                                .show();
                     }
                     else {
                         Toast.makeText(
@@ -88,55 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 .show();
                     }
                 }
-
-                /*AccountContract.AccountDbHelper dbHelper = new AccountContract.AccountDbHelper(RegisterActivity.this);
-                SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-                if (passwordEdit.getText().toString().equals(confirmPasswordEdit.getText().toString())){
-                    ContentValues values = new ContentValues();
-                    values.put(
-                            AccountContract.AccountEntry.COLUMN_NAME_FULLNAME,
-                            fullnameEdit.getText().toString()
-                    );
-                    values.put(
-                            AccountContract.AccountEntry.COLUMN_NAME_USERNAME,
-                            usernameEdit.getText().toString()
-                    );
-                    values.put(
-                            AccountContract.AccountEntry.COLUMN_NAME_PASSWORD,
-                            passwordEdit.getText().toString()
-                    );
-                    values.put(
-                            AccountContract.AccountEntry.COLUMN_NAME_EMAIL,
-                            emailEdit.getText().toString()
-                    );
-                    values.put(
-                            AccountContract.AccountEntry.COLUMN_NAME_ADDRESS,
-                            addressEdit.getText().toString()
-                    );
-                    values.put(
-                            AccountContract.AccountEntry.COLUMN_NAME_PHONE,
-                            phoneEdit.getText().toString()
-                    );
-
-                    db.insert(AccountContract.AccountEntry.TABLE_NAME,
-                            null,
-                            values
-                    );
-                    Toast.makeText(
-                            RegisterActivity.this,
-                            "The data has been saved.",
-                            Toast.LENGTH_SHORT)
-                            .show();
-                    finish();
-                }
-                else {
-                    Toast.makeText(
-                            RegisterActivity.this,
-                            "Password and confirm password doesn't seems to match.",
-                            Toast.LENGTH_SHORT)
-                            .show();
-                }*/
             }
         });
 
@@ -198,6 +143,12 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             pDialog.dismiss();
+
+            Toast.makeText(
+                    getApplicationContext(),
+                    alertMessage,
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 }

@@ -3,6 +3,8 @@
     package="com.thepoweroftether.interactivetraining">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -31,13 +33,15 @@
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateVisible|adjustResize"></activity>
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity android:name=".LearningModule" />
         <activity android:name=".AllAccountActivity" />
         <activity
             android:name=".EditAccountActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".UploadModuleActivity"></activity>
     </application>
 
 </manifest>

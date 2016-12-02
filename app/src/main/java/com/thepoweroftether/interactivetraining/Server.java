@@ -11,4 +11,6 @@ public class Server {
     public static final String editAccount = "get_account_details.php";
     public static final String updateAccount = "update_account.php";
     public static final String deleteAccount = "delete_account.php";
+    public static final String login = "login.php";
+    public static final String upload = "upload.php";
 }

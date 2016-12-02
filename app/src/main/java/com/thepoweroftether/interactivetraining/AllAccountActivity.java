@@ -46,6 +46,10 @@ public class AllAccountActivity extends ListActivity {
     private static final String TAG_ACCOUNT_ID = "id";
     private static final String TAG_USERNAME = "username";
     private static final String TAG_FULLNAME = "fullname";
+    private static final String TAG_USERTYPE = "usertype";
+
+    //Usertype Variable
+    public static String tag_usertype = "";
 
     JSONArray accounts = null;
 
@@ -84,6 +88,7 @@ public class AllAccountActivity extends ListActivity {
                         String account_id = c.getString(TAG_ACCOUNT_ID);
                         String username = c.getString(TAG_USERNAME);
                         String fullname = c.getString(TAG_FULLNAME);
+                        String usertype = c.getString(TAG_USERTYPE);
 
                         HashMap<String, String> map =
                                 new HashMap<String, String>();
@@ -91,13 +96,14 @@ public class AllAccountActivity extends ListActivity {
                         map.put(TAG_ACCOUNT_ID, account_id);
                         map.put(TAG_USERNAME, username);
                         map.put(TAG_FULLNAME, fullname);
+                        map.put(TAG_USERTYPE, usertype);
 
                         accountList.add(map);
                     }
                 }
                 else {
                     //no accounts found
-                    Intent i = new Intent(getApplicationContext(),RegisterActivity.class);
+                    Intent i = new Intent(getApplicationContext(),AdminActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }
@@ -112,6 +118,15 @@ public class AllAccountActivity extends ListActivity {
         protected void onPostExecute(String s) {
             pDialog.dismiss();
 
+            if (TAG_USERTYPE.equals("1")){
+                tag_usertype = "Admin";
+            }
+            else if (TAG_USERTYPE.equals("2")){
+                tag_usertype = "Member";
+            }
+
+            Log.d("Usertype", tag_usertype);
+
             runOnUiThread(new Runnable(){
                 @Override
                 public void run() {
@@ -119,8 +134,8 @@ public class AllAccountActivity extends ListActivity {
                             AllAccountActivity.this,
                             accountList,
                             R.layout.list_account,
-                            new String[] {TAG_ACCOUNT_ID, TAG_USERNAME, TAG_FULLNAME},
-                            new int[]{R.id.account_id, R.id.username_text, R.id.fullname_text}
+                            new String[] {TAG_ACCOUNT_ID, TAG_USERNAME, TAG_FULLNAME, TAG_USERTYPE, tag_usertype},
+                            new int[]{R.id.account_id, R.id.username_text, R.id.fullname_text, R.id.usertype, R.id.usertype_name}
                     );
                     setListAdapter(adapter);
                 }

@@ -16,15 +16,29 @@ public class AdminActivity extends AppCompatActivity {
     LayoutInflater inflater;
     View dialogView;
     EditText username_edit, fullname_edit, email_edit;
-    String username, fullname, email;
+    String id, username, password, fullname, email;
+
+    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_ACCOUNT = "account";
+    private static final String TAG_ACCOUNT_ID = "id";
+    private static final String TAG_USERNAME = "username";
+    private static final String TAG_FULLNAME = "fullname";
+    private static final String TAG_PASSWORD = "password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
+        Intent i = getIntent();
+        id = i.getStringExtra("ID");
+        username = i.getStringExtra("USERNAME");
+        password = i.getStringExtra("PASSWORD");
+
         Button account_list_button = (Button) findViewById(R.id.account_list_button);
         Button create_account_button = (Button) findViewById(R.id.create_account_button);
+        Button settings_button = (Button) findViewById(R.id.settings_button);
+        Button upload_button = (Button) findViewById(R.id.upload_button);
 
         account_list_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,6 +46,25 @@ public class AdminActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(),AllAccountActivity.class);
                 startActivity(i);
 
+            }
+        });
+
+        settings_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), SettingActivity.class);
+                i.putExtra("ID", id);
+                i.putExtra("USERNAME", username);
+                i.putExtra("PASSWORD", password);
+                startActivity(i);
+            }
+        });
+
+        upload_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), UploadModuleActivity.class);
+                startActivity(i);
             }
         });
 

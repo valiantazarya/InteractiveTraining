@@ -43,9 +43,7 @@ public class EditAccountActivity extends AppCompatActivity {
     JSONParser jsonParser = new JSONParser();
 
     //Alert Message
-    public static String alertMessage = "Update account successful.";
-
-
+    public static String alertMessage = "";
 
     private static final String url_edit_account = Server.URL + Server.editAccount;
     private static final String url_update_account = Server.URL + Server.updateAccount;
@@ -89,25 +87,13 @@ public class EditAccountActivity extends AppCompatActivity {
                 phone = phoneEdit.getText().toString();
 
                 new SaveAccountDetails().execute();
-
-                Toast.makeText(
-                        getApplicationContext(),
-                        alertMessage,
-                        Toast.LENGTH_SHORT)
-                        .show();
             }
         });
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogForm(id, username);
-                /*Toast.makeText(
-                        getApplicationContext(),
-                        alertMessage,
-                        Toast.LENGTH_SHORT)
-                        .show();
-                finish();*/
+                DialogForm();
             }
         });
 
@@ -120,14 +106,13 @@ public class EditAccountActivity extends AppCompatActivity {
     }
 
     // untuk menampilkan dialog form
-    private void DialogForm(String pId, String pUsername) {
+    private void DialogForm() {
         dialog = new AlertDialog.Builder(EditAccountActivity.this);
         inflater = getLayoutInflater();
         dialogView = inflater.inflate(R.layout.delete_layout, null);
         dialog.setView(dialogView);
         dialog.setCancelable(true);
-        dialog.setIcon(R.drawable.icon);
-        dialog.setTitle("DELETE ACCOUNT");
+        dialog.setTitle("Delete Account");
 
         dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 
@@ -266,6 +251,12 @@ public class EditAccountActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             pDialog.dismiss();
+
+            Toast.makeText(
+                    getApplicationContext(),
+                    alertMessage,
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
@@ -311,6 +302,12 @@ public class EditAccountActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             pDialog.dismiss();
+
+            Toast.makeText(
+                    getApplicationContext(),
+                    alertMessage,
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 }

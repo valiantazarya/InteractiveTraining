@@ -121,6 +121,7 @@
         <Button
             android:id="@+id/create_button"
             android:text="Create"
+            android:textColor="@color/colorText"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
