@@ -18,7 +18,7 @@
         <!-- Splash screen -->
         <activity
             android:name=".SplashScreen"
-            android:label="@string/app_name"
+            android:label="Gobs Enlightenment"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
