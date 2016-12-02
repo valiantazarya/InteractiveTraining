@@ -3,8 +3,10 @@ package com.thepoweroftether.interactivetraining;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -159,11 +162,6 @@ public class AllAccountActivity extends ListActivity {
                 //startActivity(i);
             }
         });*/
-        /*final ListView account_list = (ListView) findViewById(R.id.account_list);
-        account_list.setAdapter(new AccountAdapter(
-                this,
-                new ArrayList<String[]>()
-                ));*/
     }
 
     @Override

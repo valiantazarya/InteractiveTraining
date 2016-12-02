@@ -1,13 +1,17 @@
 package com.thepoweroftether.interactivetraining;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.os.StrictMode;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditAccountActivity extends AppCompatActivity {
+    AlertDialog.Builder dialog;
+    LayoutInflater inflater;
+    View dialogView;
 
     EditText idEdit, fullnameEdit, usernameEdit, passwordEdit, confirmPasswordEdit, emailEdit, addressEdit, phoneEdit;
     String id, fullname, username, password, confirmPassword, email, address, phone;
@@ -33,8 +40,11 @@ public class EditAccountActivity extends AppCompatActivity {
 
     JSONParser jsonParser = new JSONParser();
 
-    private static String url_edit_account = Server.URL + Server.editAccount;
-    private static String url_update_account = Server.URL + Server.updateAccount;
+    //Alert Message
+    public static String alertMessage = "Update account successful.";
+
+    private static final String url_edit_account = Server.URL + Server.editAccount;
+    private static final String url_update_account = Server.URL + Server.updateAccount;
 
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_ACCOUNT = "account";
@@ -57,6 +67,7 @@ public class EditAccountActivity extends AppCompatActivity {
 
         Button saveButton = (Button) findViewById(R.id.save_button);
         TextView backButton = (TextView) findViewById(R.id.back_button);
+        android.support.design.widget.FloatingActionButton deleteButton = (android.support.design.widget.FloatingActionButton) findViewById(R.id.detele_fab);
 
         Intent i = getIntent();
         id = i.getStringExtra(TAG_ACCOUNT_ID);
@@ -65,7 +76,6 @@ public class EditAccountActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                id = idEdit.getText().toString();
                 username = usernameEdit.getText().toString();
                 fullname = fullnameEdit.getText().toString();
                 password = passwordEdit.getText().toString();
@@ -74,6 +84,19 @@ public class EditAccountActivity extends AppCompatActivity {
                 phone = phoneEdit.getText().toString();
 
                 new SaveAccountDetails().execute();
+
+                Toast.makeText(
+                        getApplicationContext(),
+                        alertMessage,
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogForm(id, username);
             }
         });
 
@@ -81,6 +104,40 @@ public class EditAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+    }
+
+    // untuk menampilkan dialog form
+    private void DialogForm(String pId, String pUsername) {
+        dialog = new AlertDialog.Builder(EditAccountActivity.this);
+        inflater = getLayoutInflater();
+        dialogView = inflater.inflate(R.layout.delete_layout, null);
+        dialog.setView(dialogView);
+        dialog.setCancelable(true);
+        dialog.setIcon(R.drawable.icon);
+        dialog.setTitle("DELETE ACCOUNT");
+
+        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        TextView deleteWord = (TextView) findViewById(R.id.delete_words_text);
+        deleteWord.setText(deleteWord.getText().toString() + " " + pUsername + "?");
+
+        dialog.show();
+
+        Button yesButton = (Button) findViewById(R.id.yes_button);
+        Button cancelButton = (Button) findViewById(R.id.cancel_button);
+
+        yesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
@@ -101,6 +158,8 @@ public class EditAccountActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    //Looper.prepare();
+
                     int success;
                     try {
                         List<Pair<String, String>> args = new ArrayList<Pair<String, String>>();
@@ -180,20 +239,16 @@ public class EditAccountActivity extends AppCompatActivity {
                 Log.d("Networking", e.getLocalizedMessage());
             }
 
-            Log.d("Create response", jsonObject.toString());
-
             try {
                 int success = jsonObject.getInt(TAG_SUCCESS);
+
                 if (success == 1) {
+                    alertMessage = "Update account successful.";
                     Intent i = getIntent();
                     setResult(100, i);
                     finish();
                 } else {
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "Error! Update account failed.",
-                            Toast.LENGTH_SHORT)
-                            .show();
+                    alertMessage = "Error! Update account failed.";
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

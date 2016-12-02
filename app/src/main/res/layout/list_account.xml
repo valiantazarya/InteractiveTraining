@@ -1,26 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:useDefaultMargins="true"
+    android:alignmentMode="alignBounds"
+    android:columnOrderPreserved="false"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="12"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/account_id"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/username_text"
-        android:paddingTop="6dp"
-        android:paddingLeft="6dp"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:text="Title"
+        android:layout_column="0"
+        android:layout_row="0"
+        android:layout_columnSpan="10"
+        android:layout_rowSpan="1"
+        android:layout_gravity="fill"
+        android:textSize="15dp" />
     <TextView
         android:id="@+id/fullname_text"
-        android:paddingTop="6dp"
-        android:paddingLeft="6dp"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:text="Caption"
+        android:layout_column="0"
+        android:layout_row="1"
+        android:layout_columnSpan="10"
+        android:layout_rowSpan="1"
+        android:layout_gravity="fill"
+        android:textSize="12dp"/>
+
+    <TextView
+        android:drawableTint="@color/colorPrimaryDark"
+        android:drawableLeft="@android:drawable/ic_menu_info_details"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_column="11"
+        android:layout_row="0"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="2"/>
+
+</GridLayout>

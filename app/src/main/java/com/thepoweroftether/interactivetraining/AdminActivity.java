@@ -38,9 +38,9 @@ public class AdminActivity extends AppCompatActivity {
         create_account_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(i);*/
-                DialogForm("","","","Save");
+                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(i);
+                //DialogForm("","","","Delete");
             }
         });
     }
