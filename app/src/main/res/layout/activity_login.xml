@@ -13,7 +13,7 @@
     tools:context="com.thepoweroftether.interactivetraining.LoginActivity">
 
     <ImageView
-        android:src="@drawable/login"
+        android:src="@drawable/login_gobs"
         android:layout_width="match_parent"
         android:layout_height="286px" />
 

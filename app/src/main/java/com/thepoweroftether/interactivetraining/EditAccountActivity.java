@@ -1,8 +1,10 @@
 package com.thepoweroftether.interactivetraining;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Looper;
 import android.os.StrictMode;
@@ -43,8 +45,11 @@ public class EditAccountActivity extends AppCompatActivity {
     //Alert Message
     public static String alertMessage = "Update account successful.";
 
+
+
     private static final String url_edit_account = Server.URL + Server.editAccount;
     private static final String url_update_account = Server.URL + Server.updateAccount;
+    private static final String url_delete_account = Server.URL + Server.deleteAccount;
 
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_ACCOUNT = "account";
@@ -67,7 +72,7 @@ public class EditAccountActivity extends AppCompatActivity {
 
         Button saveButton = (Button) findViewById(R.id.save_button);
         TextView backButton = (TextView) findViewById(R.id.back_button);
-        android.support.design.widget.FloatingActionButton deleteButton = (android.support.design.widget.FloatingActionButton) findViewById(R.id.detele_fab);
+        Button deleteButton = (Button) findViewById(R.id.delete_button);
 
         Intent i = getIntent();
         id = i.getStringExtra(TAG_ACCOUNT_ID);
@@ -97,6 +102,12 @@ public class EditAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DialogForm(id, username);
+                /*Toast.makeText(
+                        getApplicationContext(),
+                        alertMessage,
+                        Toast.LENGTH_SHORT)
+                        .show();
+                finish();*/
             }
         });
 
@@ -118,6 +129,15 @@ public class EditAccountActivity extends AppCompatActivity {
         dialog.setIcon(R.drawable.icon);
         dialog.setTitle("DELETE ACCOUNT");
 
+        dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new DeleteAccount().execute();
+                dialog.dismiss();
+            }
+        });
+
         dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
             @Override
@@ -126,20 +146,7 @@ public class EditAccountActivity extends AppCompatActivity {
             }
         });
 
-        TextView deleteWord = (TextView) findViewById(R.id.delete_words_text);
-        deleteWord.setText(deleteWord.getText().toString() + " " + pUsername + "?");
-
         dialog.show();
-
-        Button yesButton = (Button) findViewById(R.id.yes_button);
-        Button cancelButton = (Button) findViewById(R.id.cancel_button);
-
-        yesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     class GetAccountDetails extends AsyncTask<String, String, String> {
@@ -216,7 +223,7 @@ public class EditAccountActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(EditAccountActivity.this);
-            pDialog.setMessage("Saving account details");
+            pDialog.setMessage("Updating account details");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
@@ -249,6 +256,51 @@ public class EditAccountActivity extends AppCompatActivity {
                     finish();
                 } else {
                     alertMessage = "Error! Update account failed.";
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            pDialog.dismiss();
+        }
+    }
+
+    class DeleteAccount extends AsyncTask<String, String, String>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(EditAccountActivity.this);
+            pDialog.setMessage("Deleting account");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            final List<Pair<String, String>> args = new ArrayList<Pair<String, String>>();
+            args.add(new Pair<>(TAG_ACCOUNT_ID, id));
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = jsonParser.makeHttpRequest(url_delete_account, "POST", args);
+            } catch (IOException e) {
+                Log.d("Networking", e.getLocalizedMessage());
+            }
+
+            try {
+                int success = jsonObject.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
+                    alertMessage = "Delete account successful.";
+                    Intent i = getIntent();
+                    setResult(100, i);
+                    finish();
+                } else {
+                    alertMessage = "Error! Delete account failed.";
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

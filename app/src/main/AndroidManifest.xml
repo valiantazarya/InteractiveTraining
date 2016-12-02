@@ -7,7 +7,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_launcher"
-        android:label="@string/app_name"
+        android:label="Gobs Enlightenment"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -30,11 +30,14 @@
         <activity android:name=".AdminActivity" />
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/RegisterTheme"
+            android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateVisible|adjustResize"></activity>
         <activity android:name=".LearningModule" />
         <activity android:name=".AllAccountActivity" />
-        <activity android:name=".EditAccountActivity"></activity>
+        <activity
+            android:name=".EditAccountActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
     </application>
 
 </manifest>

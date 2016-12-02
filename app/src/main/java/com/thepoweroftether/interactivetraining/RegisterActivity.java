@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
+    //Alert Message
+    public static String alertMessage = "Account registration successful.";
 
     private ProgressDialog pDialog;
     JSONParser jsonParser = new JSONParser();
@@ -71,6 +73,12 @@ public class RegisterActivity extends AppCompatActivity {
                 } else{
                     if (password.equals(confirmPassword)){
                         new CreateNewAccount().execute();
+
+                        Toast.makeText(
+                                getApplicationContext(),
+                                alertMessage,
+                                Toast.LENGTH_SHORT)
+                                .show();
                     }
                     else {
                         Toast.makeText(
@@ -174,19 +182,11 @@ public class RegisterActivity extends AppCompatActivity {
             try{
                 int success = jsonObject.getInt(TAG_SUCCESS);
                 if (success == 1){
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "Account registration success.",
-                            Toast.LENGTH_SHORT)
-                            .show();
+                    alertMessage = "Account registration success.";
                     finish();
                 }
                 else{
-                    Toast.makeText(
-                            RegisterActivity.this,
-                            "Error! Account registration failed.",
-                            Toast.LENGTH_SHORT)
-                            .show();
+                    alertMessage = "Error! Account registration failed.";
                 }
             }catch (JSONException e){
                 e.printStackTrace();
