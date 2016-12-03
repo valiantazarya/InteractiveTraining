@@ -3,6 +3,7 @@ package com.thepoweroftether.interactivetraining;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +32,7 @@ public class MemberExcerciseActivity extends AppCompatActivity {
     public static String alertMessage = "";
 
     private static final String url_get_excercise_details = Server.URL + Server.getExcerciseDetails;
+    private static final String url_insert_score = Server.URL + Server.insertScore;
     String account_id, excercise_id, username, question, opt_a, opt_b, opt_c, opt_d, answer;
 
     private static final String TAG_SUCCESS = "success";
@@ -60,6 +63,9 @@ public class MemberExcerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_excercise);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         Intent i = getIntent();
         account_id = i.getStringExtra("id");
         username = i.getStringExtra("username");
@@ -84,6 +90,7 @@ public class MemberExcerciseActivity extends AppCompatActivity {
                     qid++;
                 }
                 else {
+                    new InsertScore().execute();
                     finish();
                     Intent i = new Intent(getApplicationContext(), ExcerciseResultActivity.class);
                     i.putExtra("id", account_id);
@@ -146,7 +153,7 @@ public class MemberExcerciseActivity extends AppCompatActivity {
                             rda.setText(account.getString(TAG_OPTA));
                             rdb.setText(account.getString(TAG_OPTB));
                             //check null variable
-                            if (TAG_OPTC.equals("null"))
+                            if (account.getString(TAG_OPTC).equals("null"))
                                 rdc.setVisibility(View.GONE);
                             else {
                                 rdc.setVisibility(View.VISIBLE);
@@ -154,7 +161,7 @@ public class MemberExcerciseActivity extends AppCompatActivity {
                             }
 
                             //check null variable
-                            if (TAG_OPTD.equals("null"))
+                            if (account.getString(TAG_OPTD).equals("null"))
                                 rdd.setVisibility(View.GONE);
                             else {
                                 rdd.setVisibility(View.VISIBLE);
@@ -176,6 +183,61 @@ public class MemberExcerciseActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             pDialog.dismiss();
+        }
+    }
+
+    class InsertScore extends AsyncTask<String, String, String>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            /*pDialog = new ProgressDialog(MemberExcerciseActivity.this);
+            pDialog.setMessage("Saving Score");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();*/
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            List<Pair<String, String>> args =
+                    new ArrayList<Pair<String, String>>();
+            args.add(new Pair<>("account_id", account_id));
+            args.add(new Pair<>("username", username));
+            args.add(new Pair<>("score", Integer.toString(score)));
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = jsonParser.makeHttpRequest(url_insert_score, "POST", args);
+            }catch (IOException e){
+                Log.d("Networking", e.getLocalizedMessage());
+            }
+
+            Log.d("Create response", jsonObject.toString());
+
+            try{
+                int success = jsonObject.getInt(TAG_SUCCESS);
+                if (success == 1){
+                    alertMessage = "Score saved.";
+                    finish();
+                }
+                else{
+                    alertMessage = "Error! Cannot save score.";
+                }
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            pDialog.dismiss();
+
+            Toast.makeText(
+                    getApplicationContext(),
+                    alertMessage,
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 }

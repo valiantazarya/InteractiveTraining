@@ -16,4 +16,6 @@ public class Server {
     public static final String insert_upload = "insert_upload.php";
     public static final String readModule = "get_all_modules.php";
     public static final String getExcerciseDetails = "get_excercise_details.php";
+    public static final String getScore = "get_score.php";
+    public static final String insertScore = "insert_score.php";
 }

@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/LoginTheme"
+            android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity android:name=".MainActivity" />
         <!-- Splash screen -->

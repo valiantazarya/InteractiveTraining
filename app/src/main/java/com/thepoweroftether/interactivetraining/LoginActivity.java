@@ -173,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(LoginActivity.this);
+            pDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme);
             pDialog.setMessage("Logging in");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
