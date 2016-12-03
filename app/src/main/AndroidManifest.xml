@@ -41,7 +41,11 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".SettingActivity" />
-        <activity android:name=".UploadModuleActivity"></activity>
+        <activity android:name=".UploadModuleActivity" />
+        <activity android:name=".AllExcerciseActivity" />
+        <activity android:name=".CreateExcerciseActivity" />
+        <activity android:name=".MemberExcerciseActivity" />
+        <activity android:name=".ExcerciseResultActivity"></activity>
     </application>
 
 </manifest>

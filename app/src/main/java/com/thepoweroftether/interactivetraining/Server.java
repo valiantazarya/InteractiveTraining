@@ -15,4 +15,5 @@ public class Server {
     public static final String upload = "upload.php";
     public static final String insert_upload = "insert_upload.php";
     public static final String readModule = "get_all_modules.php";
+    public static final String getExcerciseDetails = "get_excercise_details.php";
 }

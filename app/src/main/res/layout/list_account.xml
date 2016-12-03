@@ -51,7 +51,7 @@
         android:id="@+id/usertype_name"
         android:drawableTint="@color/colorPrimaryDark"
         android:drawableLeft="@android:drawable/ic_lock_lock"
-        android:text="Type"
+        android:text=""
         android:textColor="@color/colorPrimaryDark"
         android:layout_column="10"
         android:layout_row="0"

@@ -21,6 +21,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -49,6 +50,8 @@ import static android.R.attr.start;
 public class LearningModule extends AppCompatActivity {
     private ProgressDialog pDialog;
     private static final int progress_bar_type = 0;
+    ListView listModule;
+    learningItemAdapter adapter;
 
     private static String file_url = "http://notes.azarya.xyz/gobs_enlightment/learning_module/";
 
@@ -66,27 +69,26 @@ public class LearningModule extends AppCompatActivity {
     ArrayList<ModuleItem> moduleItems;
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onPause() {
+        super.onPause();
+        adapter.notifyDataSetChanged();
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learning_module);
 
+        listModule = (ListView) findViewById(R.id.listModule);
         moduleItems = new ArrayList<ModuleItem>();
-        getAllModules();
+        new LoadAllModules().execute(LearningModule.this);
 
-        //INSERTING DATA
-        ListView listModule = (ListView) findViewById(R.id.listModule);
-        listModule.setAdapter(
-                new learningItemAdapter(
-                        LearningModule.this,
-                        moduleItems
-                ));
 
     }
+
+
+
 
 
     public class ModuleItem {
@@ -151,12 +153,83 @@ public class LearningModule extends AppCompatActivity {
         }catch (NullPointerException e){
             startActivity(
                     new Intent (
-                            LearningModule.this,
+                            getApplicationContext(),
                             LoginActivity.class
                     )
             );
         }
     }
+
+
+
+    class LoadAllModules extends AsyncTask<Context,String,String>{
+        Context context;
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            adapter = new learningItemAdapter(
+                    context,
+                    moduleItems
+            );
+            //INSERTING DATA
+            listModule.setAdapter(
+                   adapter
+            );
+        }
+
+        @Override
+        protected String doInBackground(Context... params) {
+            context = params[0];
+            int success;
+            try {
+                List<Pair<String, String>> args = new ArrayList<Pair<String, String>>();
+                JSONObject jsonObject = null;
+
+                try {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+                    jsonObject = jsonParser.makeHttpRequest(url_read_module, "POST",args);
+                } catch (IOException e) {
+                    Log.d("Networking", e.getLocalizedMessage());
+                }
+
+
+                Log.d("Login details", jsonObject.toString());
+
+                success = jsonObject.getInt(TAG_SUCCESS);
+                if (success == 1) {
+                    JSONArray moduleObj = jsonObject.getJSONArray(TAG_MODULE);
+
+                    for (int i = 0; i < moduleObj.length(); i++) {
+                        JSONObject module = moduleObj.getJSONObject(i);
+                        String id =   module.getString(TAG_MODULE_ID);
+                        String name =  module.getString(TAG_TITLE);
+                        ModuleItem item = new ModuleItem(
+                                module.getString(TAG_MODULE_ID),
+                                module.getString(TAG_TITLE),
+                                module.getString(TAG_CAPTION),
+                                module.getString(TAG_FILENAME),
+                                module.getString(TAG_UPLOADER)
+                        );
+                        moduleItems.add(item);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }catch (NullPointerException e){
+                startActivity(
+                        new Intent (
+                                context,
+                                LoginActivity.class
+                        )
+                );
+            }
+            return null;
+        }
+
+
+    }
+
 
 
     class learningItemAdapter extends BaseAdapter {
@@ -197,16 +270,21 @@ public class LearningModule extends AppCompatActivity {
             View vi = convertView;
             if (vi == null)
                 vi = inflater.inflate(R.layout.itemlearningmodule, null);
+
+            String title = data.get(position).title;
+            String caption = data.get(position).caption;
+            final String filename = data.get(position).filename;
+
             TextView txtTitle = (TextView) vi.findViewById(R.id.txtTitle);
-            txtTitle.setText(data.get(position).title);
+            txtTitle.setText(title);
             TextView txtCaption = (TextView) vi.findViewById(R.id.txtCaption);
-            txtCaption.setText(data.get(position).caption.substring(0,40)+" ...");
+            txtCaption.setText(caption.length()>40?caption.substring(0,40)+" ...":caption);
 
             final Button btnOpen = (Button) vi.findViewById(R.id.btnOpen);
 
             File sdCard = Environment.getExternalStorageDirectory();
             File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
-            File file = new File(directory, "/" + data.get(position).filename);
+            File file = new File(directory, "/" + filename);
             if (file.exists()) {
                 btnOpen.setBackgroundResource(android.R.drawable.ic_menu_view);
             }
@@ -214,9 +292,9 @@ public class LearningModule extends AppCompatActivity {
             btnOpen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(!checkFileisDownloaded(data.get(position).filename )) {
+                    if(!checkFileisDownloaded(filename )) {
                          new DownloadFileFromURL().execute(
-                                new String[]{file_url, data.get(position).filename}
+                                new String[]{file_url, filename}
                         );
                     }
                 }

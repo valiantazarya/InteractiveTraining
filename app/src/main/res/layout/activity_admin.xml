@@ -23,17 +23,21 @@
         android:layout_marginTop="25dp">
         <Button
             android:id="@+id/account_list_button"
-            android:text="Account List"
+            android:text=" Account List"
+            android:drawableLeft="@android:drawable/ic_menu_agenda"
+            android:drawableTint="@color/colorText"
             android:textColor="@color/colorText"
-            android:layout_width="wrap_content"
+            android:layout_width="460px"
             android:layout_height="wrap_content"
             android:background="@drawable/login_setting_button"/>
 
         <Button
             android:id="@+id/create_account_button"
-            android:text="Create Account"
+            android:text=" Create Account"
+            android:drawableLeft="@android:drawable/ic_menu_add"
+            android:drawableTint="@color/colorText"
             android:textColor="@color/colorText"
-            android:layout_width="wrap_content"
+            android:layout_width="460px"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:background="@drawable/login_setting_button"/>
@@ -47,17 +51,40 @@
             android:textColor="@color/colorText"
             android:drawableLeft="@android:drawable/ic_menu_preferences"
             android:drawableTint="@color/colorText"
-            android:layout_width="wrap_content"
+            android:layout_width="460px"
             android:layout_height="wrap_content"
             android:background="@drawable/login_setting_button"/>
         <Button
             android:id="@+id/upload_button"
-            android:text=" Upload"
+            android:text=" Upload Module"
             android:textColor="@color/colorText"
             android:drawableLeft="@android:drawable/ic_menu_upload"
             android:drawableTint="@color/colorText"
             android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
+            android:layout_width="460px"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_setting_button"/>
+    </TableRow>
+    <TableRow
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+        <Button
+            android:id="@+id/excercise_list_button"
+            android:text=" Excercise List"
+            android:textColor="@color/colorText"
+            android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+            android:drawableTint="@color/colorText"
+            android:layout_width="460px"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_setting_button"/>
+        <Button
+            android:id="@+id/excercise_details_button"
+            android:text=" Excercise Details"
+            android:textColor="@color/colorText"
+            android:drawableLeft="@android:drawable/ic_menu_info_details"
+            android:drawableTint="@color/colorText"
+            android:layout_marginLeft="10dp"
+            android:layout_width="460px"
             android:layout_height="wrap_content"
             android:background="@drawable/login_setting_button"/>
     </TableRow>

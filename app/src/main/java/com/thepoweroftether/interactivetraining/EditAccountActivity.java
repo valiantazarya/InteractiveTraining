@@ -36,7 +36,7 @@ public class EditAccountActivity extends AppCompatActivity {
     View dialogView;
 
     EditText idEdit, fullnameEdit, usernameEdit, passwordEdit, confirmPasswordEdit, emailEdit, addressEdit, phoneEdit;
-    String id, fullname, username, password, confirmPassword, email, address, phone;
+    String id, fullname, username, password, confirmPassword, email, address, phone, usertype;
 
     private ProgressDialog pDialog;
 
@@ -59,6 +59,7 @@ public class EditAccountActivity extends AppCompatActivity {
     private static final String TAG_EMAIL = "email";
     private static final String TAG_PHONE = "phone";
     private static final String TAG_MESSAGE = "message";
+    private static final String TAG_USERTYPE = "usertype";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,15 @@ public class EditAccountActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         id = i.getStringExtra(TAG_ACCOUNT_ID);
+        usertype = i.getStringExtra(TAG_USERTYPE);
+
+        if (usertype.equals("2")) {
+            deleteButton.setVisibility(View.GONE);
+        }
+        else if (usertype.equals("1")) {
+            deleteButton.setVisibility(View.VISIBLE);
+        }
+
         new GetAccountDetails().execute();
 
         saveButton.setOnClickListener(new View.OnClickListener() {

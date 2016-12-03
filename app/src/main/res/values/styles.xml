@@ -38,7 +38,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:colorBackground">@color/colorBackground</item>
-        <item name="android:textAppearanceButton">@color/colorText</item>
         <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="android:editTextColor">@color/colorSecondaryText</item>
         <item name="android:textColorHint">@color/colorPrimaryDark</item>

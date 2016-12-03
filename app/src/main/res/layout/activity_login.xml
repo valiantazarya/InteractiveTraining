@@ -37,6 +37,7 @@
         <EditText
             android:id="@+id/password_edit"
             android:layout_width="512px"
+            android:drawableTint="@color/colorLightPrimary"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="Password" />

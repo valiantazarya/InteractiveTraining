@@ -46,6 +46,7 @@ public class AdminActivity extends AppCompatActivity {
         Button create_account_button = (Button) findViewById(R.id.create_account_button);
         Button settings_button = (Button) findViewById(R.id.settings_button);
         Button upload_button = (Button) findViewById(R.id.upload_button);
+        Button excercise_details_button = (Button) findViewById(R.id.excercise_details_button);
 
         account_list_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +83,14 @@ public class AdminActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(i);
                 //DialogForm("","","","Delete");
+            }
+        });
+
+        excercise_details_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MemberExcerciseActivity.class);
+                startActivity(i);
             }
         });
     }

@@ -119,10 +119,10 @@ public class AllAccountActivity extends ListActivity {
             pDialog.dismiss();
 
             if (TAG_USERTYPE.equals("1")){
-                tag_usertype = "Admin";
+                tag_usertype = "1";
             }
             else if (TAG_USERTYPE.equals("2")){
-                tag_usertype = "Member";
+                tag_usertype = "2";
             }
 
             Log.d("Usertype", tag_usertype);
@@ -161,6 +161,7 @@ public class AllAccountActivity extends ListActivity {
                 Intent i = new Intent(getApplicationContext(), EditAccountActivity.class);
 
                 i.putExtra(TAG_ACCOUNT_ID, account_id);
+                i.putExtra(TAG_USERTYPE, tag_usertype);
                 startActivityForResult(i, 100);
             }
         });
