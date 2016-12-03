@@ -13,4 +13,5 @@ public class Server {
     public static final String deleteAccount = "delete_account.php";
     public static final String login = "login.php";
     public static final String upload = "upload.php";
+    public static final String readModule = "get_all_modules.php";
 }

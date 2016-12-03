@@ -21,6 +21,20 @@
         android:layout_rowSpan="1"
         android:layout_gravity="fill"
         android:textSize="15dp" />
+
+
+    <Button
+        android:id="@+id/btnOpen"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:background="@android:drawable/ic_input_get"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_column="11"
+        android:layout_row="0"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="2"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"/>
+
     <TextView
         android:id="@+id/txtCaption"
         android:text="Caption"
@@ -30,28 +44,6 @@
         android:layout_rowSpan="1"
         android:layout_gravity="fill"
         android:textSize="12dp" />
-
-    <Button
-        android:id="@+id/btnDownload"
-        android:text="Download"
-        android:textColor="#fff"
-        android:background="#1976D2"
-        android:layout_column="11"
-        android:layout_row="0"
-        android:layout_columnSpan="1"
-        android:layout_rowSpan="2"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/btnOpen"
-        android:text="Open"
-        android:textColor="#fff"
-        android:background="#1B5E20"
-        android:layout_column="10"
-        android:layout_row="0"
-        android:layout_columnSpan="1"
-        android:layout_rowSpan="2" />
-
 
 
 </GridLayout>
