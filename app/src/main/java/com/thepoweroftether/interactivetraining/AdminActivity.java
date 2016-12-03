@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class AdminActivity extends AppCompatActivity {
 
@@ -34,6 +37,10 @@ public class AdminActivity extends AppCompatActivity {
         id = i.getStringExtra("ID");
         username = i.getStringExtra("USERNAME");
         password = i.getStringExtra("PASSWORD");
+        fullname = i.getStringExtra("FULLNAME");
+
+        TextView welcomeMessage = (TextView) findViewById(R.id.welcome_message);
+        welcomeMessage.setText("Welcome " + fullname);
 
         Button account_list_button = (Button) findViewById(R.id.account_list_button);
         Button create_account_button = (Button) findViewById(R.id.create_account_button);
@@ -64,6 +71,7 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), UploadModuleActivity.class);
+                i.putExtra("USERNAME", username);
                 startActivity(i);
             }
         });

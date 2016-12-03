@@ -64,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
                 phone = phoneEdit.getText().toString();
 
                 if (fullname.equals("") || username.equals("") || password.equals("") || email.equals("") ||
-                        address.equals("") || phone.equals("")){
+                        address.equals("") || phone.equals("") || confirmPassword.equals("")){
                     Toast.makeText(
                             RegisterActivity.this,
                             "Error! Your cannot submit an empty field(s).",

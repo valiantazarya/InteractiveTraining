@@ -35,7 +35,7 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
-    String id, username, password, usertype, usernameGet, passwordGet;
+    String id, username, fullname, password, usertype, usernameGet, passwordGet;
     private static int READ_BLOCK_SIZE = 100;
 
     private ProgressDialog pDialog;
@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG_ACCOUNT = "account";
     private static final String TAG_ACCOUNT_ID = "id";
     private static final String TAG_USERNAME = "username";
+    private static final String TAG_FULLNAME = "fullname";
     private static final String TAG_PASSWORD = "password";
     private static final String TAG_USERTYPE = "usertype";
     JSONParser jsonParser = new JSONParser();
@@ -207,6 +208,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             id = account.getString(TAG_ACCOUNT_ID);
                             username = account.getString(TAG_USERNAME);
+                            fullname = account.getString(TAG_FULLNAME);
                             password = account.getString(TAG_PASSWORD);
                             usertype = account.getString(TAG_USERTYPE);
 
@@ -229,6 +231,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             intent.putExtra("ID", id);
                             intent.putExtra("USERNAME", username);
+                            intent.putExtra("FULLNAME", fullname);
                             intent.putExtra("PASSWORD", password);
                             intent.putExtra("USERTYPE", usertype);
                             startActivity(intent);

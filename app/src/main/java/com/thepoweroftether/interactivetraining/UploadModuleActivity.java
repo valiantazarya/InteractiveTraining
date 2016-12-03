@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,10 +21,14 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,8 +37,16 @@ import java.util.List;
 
 public class UploadModuleActivity extends AppCompatActivity {
 
+    //Alert Message
+    public static String alertMessage = "";
+
+    private ProgressDialog pDialog;
+    JSONParser jsonParser = new JSONParser();
+
+    String fileSize;
     String filter = "PDF";
-    EditText otherFilter;
+    String title, caption, filename, username;
+    EditText otherFilter, titleEdit, captionEdit;
     TextView uploadText;
     Button uploadButton, pickButton;
     RadioGroup filterFile;
@@ -44,6 +60,8 @@ public class UploadModuleActivity extends AppCompatActivity {
     //final String uploadFileName = "Yoona-SNSD-1.jpg";
 
     private static final String url_upload = Server.URL + Server.upload;
+    private static final String url_insert_upload = Server.URL + Server.insert_upload;
+    private static final String TAG_SUCCESS = "success";
 
     private static String fileUpload;
 
@@ -51,6 +69,13 @@ public class UploadModuleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_module);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        //Extra intent
+        Intent i = getIntent();
+        username = i.getStringExtra("USERNAME");
 
         uploadButton = (Button)findViewById(R.id.upload_button);
         uploadText  = (TextView)findViewById(R.id.upload_text);
@@ -65,22 +90,39 @@ public class UploadModuleActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                dialog = ProgressDialog.show(UploadModuleActivity.this, "", "Uploading file...", true);
+                dialog = new ProgressDialog(UploadModuleActivity.this);
+                dialog.setMessage("Uploading file");
+                dialog.setIndeterminate(false);
+                dialog.setCancelable(true);
+                dialog.show();
 
                 new Thread(new Runnable() {
                     public void run() {
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                uploadText.setText("uploading started.....");
+                                uploadText.setText("Uploading started");
                             }
                         });
-
                         //uploadFile(uploadFilePath + "" + uploadFileName);
                         uploadFile(fileUpload);
-
                     }
                 }).start();
+
+                titleEdit = (EditText) findViewById(R.id.title_edit);
+                captionEdit = (EditText) findViewById(R.id.caption_edit);
+
+                title = titleEdit.getText().toString();
+                caption = captionEdit.getText().toString();
+
+                if (title.equals("") || caption.equals("")) {
+                    Toast.makeText(
+                            UploadModuleActivity.this,
+                            "Error! Your cannot submit an empty field(s).",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    new InsertUploadFile().execute();
+                }
             }
         });
 
@@ -118,8 +160,17 @@ public class UploadModuleActivity extends AppCompatActivity {
                 fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
                     public void fileSelected(File file) {
                         Log.d(getClass().getName(), "selected file " + file.toString());
+                        long size = file.length();
+                        if (size/1024/1024 > 1)
+                            fileSize = String.format("%.2f", (((float) size)/1024/1024)) + " MB";
+                        else {
+                            fileSize = String.format("%.2f", (((float) size)/1024)) + " KB";
+                        }
                         fileUpload = file.toString();
-                        uploadText.setText("Uploading file path :- '"+fileUpload+"'");
+                        int lastIndexSlash = fileUpload.lastIndexOf("/");
+                        filename = fileUpload.substring(lastIndexSlash+1);
+                        //filename = fileUpload.substring(fileUpload.charAt());
+                        uploadText.setText("Uploading file path :- '"+fileUpload+"' (Size : " + fileSize + ")");
                     }
                 });
                 fileDialog.addDirectoryListener(new FileDialog.DirectorySelectedListener() {
@@ -234,6 +285,7 @@ public class UploadModuleActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
+                    finish();
                 }
 
                 //close the streams //
@@ -275,6 +327,62 @@ public class UploadModuleActivity extends AppCompatActivity {
         } // End else block
     }
 
+
+    class InsertUploadFile extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(UploadModuleActivity.this);
+            pDialog.setMessage("Saving file");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            List<Pair<String, String>> args =
+                    new ArrayList<Pair<String, String>>();
+            args.add(new Pair<>("title", title));
+            args.add(new Pair<>("caption", caption));
+            args.add(new Pair<>("filename", filename));
+            args.add(new Pair<>("username", username));
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = jsonParser.makeHttpRequest(url_insert_upload, "POST", args);
+            }catch (IOException e){
+                Log.d("Networking", e.getLocalizedMessage());
+            }
+
+            Log.d("Create response", jsonObject.toString());
+
+            try{
+                int success = jsonObject.getInt(TAG_SUCCESS);
+                if (success == 1){
+                    alertMessage = "Upload file successful.";
+                    //finish();
+                }
+                else{
+                    alertMessage = "Error! Upload file failed.";
+                }
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            pDialog.dismiss();
+
+            /*Toast.makeText(
+                    getApplicationContext(),
+                    alertMessage,
+                    Toast.LENGTH_SHORT)
+                    .show();*/
+        }
+    }
 }
 
 class FileDialog {
