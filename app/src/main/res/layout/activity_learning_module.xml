@@ -4,10 +4,14 @@
     android:id="@+id/activity_learning_module"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorText"
   tools:context="com.thepoweroftether.interactivetraining.LearningModule">
 
 
     <ListView
+        android:divider="@android:color/transparent"
+        android:dividerHeight="4dp"
+        android:layout_margin="8dp"
         android:focusable="false"
         android:id="@+id/listModule"
         android:layout_width="match_parent"

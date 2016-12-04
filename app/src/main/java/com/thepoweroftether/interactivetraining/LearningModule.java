@@ -6,11 +6,13 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v4.app.BundleCompat;
+import android.support.v4.widget.Space;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -24,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -88,9 +91,6 @@ public class LearningModule extends AppCompatActivity {
     }
 
 
-
-
-
     public class ModuleItem {
         public String id;
         public String title;
@@ -98,12 +98,12 @@ public class LearningModule extends AppCompatActivity {
         public String filename;
         public String uploader;
 
-        ModuleItem( String id,
-                String title,
-                String caption,
-                String filename,
-                String uploader
-        ){
+        ModuleItem(String id,
+                   String title,
+                   String caption,
+                   String filename,
+                   String uploader
+        ) {
             this.id = id;
             this.title = title;
             this.caption = caption;
@@ -122,7 +122,7 @@ public class LearningModule extends AppCompatActivity {
             try {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
-                jsonObject = jsonParser.makeHttpRequest(url_read_module, "POST",args);
+                jsonObject = jsonParser.makeHttpRequest(url_read_module, "POST", args);
             } catch (IOException e) {
                 Log.d("Networking", e.getLocalizedMessage());
             }
@@ -136,8 +136,8 @@ public class LearningModule extends AppCompatActivity {
 
                 for (int i = 0; i < moduleObj.length(); i++) {
                     JSONObject module = moduleObj.getJSONObject(i);
-                    String id =   module.getString(TAG_MODULE_ID);
-                    String name =  module.getString(TAG_TITLE);
+                    String id = module.getString(TAG_MODULE_ID);
+                    String name = module.getString(TAG_TITLE);
                     ModuleItem item = new ModuleItem(
                             module.getString(TAG_MODULE_ID),
                             module.getString(TAG_TITLE),
@@ -150,9 +150,9 @@ public class LearningModule extends AppCompatActivity {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             startActivity(
-                    new Intent (
+                    new Intent(
                             getApplicationContext(),
                             LoginActivity.class
                     )
@@ -161,9 +161,9 @@ public class LearningModule extends AppCompatActivity {
     }
 
 
-
-    class LoadAllModules extends AsyncTask<Context,String,String>{
+    class LoadAllModules extends AsyncTask<Context, String, String> {
         Context context;
+
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
@@ -173,7 +173,7 @@ public class LearningModule extends AppCompatActivity {
             );
             //INSERTING DATA
             listModule.setAdapter(
-                   adapter
+                    adapter
             );
         }
 
@@ -188,7 +188,7 @@ public class LearningModule extends AppCompatActivity {
                 try {
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                     StrictMode.setThreadPolicy(policy);
-                    jsonObject = jsonParser.makeHttpRequest(url_read_module, "POST",args);
+                    jsonObject = jsonParser.makeHttpRequest(url_read_module, "POST", args);
                 } catch (IOException e) {
                     Log.d("Networking", e.getLocalizedMessage());
                 }
@@ -202,8 +202,8 @@ public class LearningModule extends AppCompatActivity {
 
                     for (int i = 0; i < moduleObj.length(); i++) {
                         JSONObject module = moduleObj.getJSONObject(i);
-                        String id =   module.getString(TAG_MODULE_ID);
-                        String name =  module.getString(TAG_TITLE);
+                        String id = module.getString(TAG_MODULE_ID);
+                        String name = module.getString(TAG_TITLE);
                         ModuleItem item = new ModuleItem(
                                 module.getString(TAG_MODULE_ID),
                                 module.getString(TAG_TITLE),
@@ -216,9 +216,9 @@ public class LearningModule extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-            }catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 startActivity(
-                        new Intent (
+                        new Intent(
                                 context,
                                 LoginActivity.class
                         )
@@ -229,7 +229,6 @@ public class LearningModule extends AppCompatActivity {
 
 
     }
-
 
 
     class learningItemAdapter extends BaseAdapter {
@@ -278,25 +277,30 @@ public class LearningModule extends AppCompatActivity {
             TextView txtTitle = (TextView) vi.findViewById(R.id.txtTitle);
             txtTitle.setText(title);
             TextView txtCaption = (TextView) vi.findViewById(R.id.txtCaption);
-            txtCaption.setText(caption.length()>40?caption.substring(0,40)+" ...":caption);
+            txtCaption.setText(caption.length() > 40 ? caption.substring(0, 40) + " ..." : caption);
 
-            final Button btnOpen = (Button) vi.findViewById(R.id.btnOpen);
-
+            final ImageButton btnOpen = (ImageButton) vi.findViewById(R.id.btnOpen);
             File sdCard = Environment.getExternalStorageDirectory();
             File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
             File file = new File(directory, "/" + filename);
             if (file.exists()) {
-                btnOpen.setBackgroundResource(android.R.drawable.ic_menu_view);
+                btnOpen.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        checkFileisDownloaded(filename);
+                    }
+                });
+            }else{
+                btnOpen.setBackgroundTintList(context.getResources().getColorStateList(android.R.color.transparent));
             }
 
-            btnOpen.setOnClickListener(new View.OnClickListener() {
+            final ImageButton btnDownload = (ImageButton) vi.findViewById(R.id.btnDownload);
+            btnDownload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(!checkFileisDownloaded(filename )) {
-                         new DownloadFileFromURL().execute(
-                                new String[]{file_url, filename}
-                        );
-                    }
+                    new DownloadFileFromURL().execute(
+                            new String[]{file_url, filename}
+                    );
                 }
             });
             return vi;
@@ -304,16 +308,17 @@ public class LearningModule extends AppCompatActivity {
     }
 
 
-    boolean checkFileisDownloaded(String filename){
+    boolean checkFileisDownloaded(String filename) {
         try {
-           File sdCard = Environment.getExternalStorageDirectory();
+            File sdCard = Environment.getExternalStorageDirectory();
             File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
 
             File file = new File(directory, "/" + filename);
 
             if (file.exists()) {
                 Intent target = new Intent(Intent.ACTION_VIEW);
-                target.setDataAndType(Uri.fromFile(file), "application/pdf");
+                String extension = filename.split("\\.")[1];
+                target.setDataAndType(Uri.fromFile(file), "application/"+extension);
                 target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
                 Intent intent = Intent.createChooser(target, "Open File");
@@ -321,20 +326,20 @@ public class LearningModule extends AppCompatActivity {
                     startActivity(intent);
                 } catch (ActivityNotFoundException e) {
                     // Instruct the user to install a PDF reader here, or something
-                    Toast.makeText(getApplicationContext(), "Please install any PDF Reader, GOBS!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please install any Reader, GOBS!", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
-        }catch (Exception e){
-            //do something wkwk
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
     }
 
 
     //Dialog untuk loading module
-    protected Dialog onCreateDialog(int id){
-        switch (id){
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
             case progress_bar_type:
                 pDialog = new ProgressDialog(this);
                 pDialog.setMessage("Downloading GOBS Module, " +
@@ -356,7 +361,7 @@ public class LearningModule extends AppCompatActivity {
     protected class DownloadFileFromURL extends AsyncTask<String, Integer, String> {
         String filename;
 
-        protected  void onPreExecute(){
+        protected void onPreExecute() {
             super.onPreExecute();
             showDialog(progress_bar_type);
         }
@@ -367,7 +372,7 @@ public class LearningModule extends AppCompatActivity {
             try {
                 publishProgress(10);
                 filename = f_url[1];
-                URL url = new URL(f_url[0]+filename);
+                URL url = new URL(f_url[0] + filename);
 
                 publishProgress(20);
                 URLConnection connection = url.openConnection();
@@ -380,13 +385,13 @@ public class LearningModule extends AppCompatActivity {
 
                 publishProgress(50);
                 File sdCard = Environment.getExternalStorageDirectory();
-                File directory = new File(sdCard.getAbsolutePath()+"/GobsFiles");
+                File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
 
                 publishProgress(60);
                 directory.mkdirs();
 
                 publishProgress(70);
-                File file = new File(directory,"/"+filename);
+                File file = new File(directory, "/" + filename);
                 FileOutputStream fOut = new FileOutputStream(file);
 
                 publishProgress(80);
@@ -411,7 +416,7 @@ public class LearningModule extends AppCompatActivity {
                     input.close();
                 }
 
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.e("Error : ", e.getMessage());
             }
 
@@ -423,10 +428,10 @@ public class LearningModule extends AppCompatActivity {
             pDialog.setProgress(progress[0]);
         }
 
-        protected void onPostExecute(String file_url){
+        protected void onPostExecute(String file_url) {
             dismissDialog(progress_bar_type);
 
-           checkFileisDownloaded(filename);
+            checkFileisDownloaded(filename);
         }
     }
 

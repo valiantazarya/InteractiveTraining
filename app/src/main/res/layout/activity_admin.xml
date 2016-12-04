@@ -4,88 +4,402 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:gravity="center_horizontal"
+    android:background="@color/colorLightPrimary"
     tools:context="com.thepoweroftether.interactivetraining.AdminActivity">
 
+
+
+
+
     <TextView
+        android:padding="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/colorText"
         android:id="@+id/welcome_message"
         android:textSize="18dp"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""/>
+        android:text="Welcome"/>
 
-    <TableRow
-        android:gravity="center"
-        android:layout_marginTop="25dp">
-        <Button
-            android:id="@+id/account_list_button"
-            android:text=" Account List"
-            android:drawableLeft="@android:drawable/ic_menu_agenda"
-            android:drawableTint="@color/colorText"
-            android:textColor="@color/colorText"
-            android:layout_width="460px"
-            android:layout_height="wrap_content"
-            android:background="@drawable/login_setting_button"/>
 
-        <Button
-            android:id="@+id/create_account_button"
-            android:text=" Create Account"
-            android:drawableLeft="@android:drawable/ic_menu_add"
-            android:drawableTint="@color/colorText"
-            android:textColor="@color/colorText"
-            android:layout_width="460px"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/login_setting_button"/>
-    </TableRow>
-    <TableRow
-        android:gravity="center"
-        android:layout_marginTop="10dp">
-        <Button
-            android:id="@+id/settings_button"
-            android:text=" Settings"
-            android:textColor="@color/colorText"
-            android:drawableLeft="@android:drawable/ic_menu_preferences"
-            android:drawableTint="@color/colorText"
-            android:layout_width="460px"
-            android:layout_height="wrap_content"
-            android:background="@drawable/login_setting_button"/>
-        <Button
-            android:id="@+id/upload_button"
-            android:text=" Upload Module"
-            android:textColor="@color/colorText"
-            android:drawableLeft="@android:drawable/ic_menu_upload"
-            android:drawableTint="@color/colorText"
-            android:layout_marginLeft="10dp"
-            android:layout_width="460px"
-            android:layout_height="wrap_content"
-            android:background="@drawable/login_setting_button"/>
-    </TableRow>
-    <TableRow
-        android:gravity="center"
-        android:layout_marginTop="10dp">
-        <Button
-            android:id="@+id/excercise_list_button"
-            android:text=" Excercise List"
-            android:textColor="@color/colorText"
-            android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-            android:drawableTint="@color/colorText"
-            android:layout_width="460px"
-            android:layout_height="wrap_content"
-            android:background="@drawable/login_setting_button"/>
-        <Button
-            android:id="@+id/excercise_details_button"
-            android:text=" Excercise Details"
-            android:textColor="@color/colorText"
-            android:drawableLeft="@android:drawable/ic_menu_info_details"
-            android:drawableTint="@color/colorText"
-            android:layout_marginLeft="10dp"
-            android:layout_width="460px"
-            android:layout_height="wrap_content"
-            android:background="@drawable/login_setting_button"/>
-    </TableRow>
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:background="@color/colorLightPrimary"
+        android:layout_width="match_parent"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:background="@color/colorLightPrimary"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+
+                    <LinearLayout
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_weight="1">
+
+                        <ImageButton
+                            android:scaleType="fitXY"
+                            android:background="@color/colorPrimaryDark"
+                            android:src="@android:drawable/ic_menu_my_calendar"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:id="@+id/account_list_button" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.7">
+
+                        <TextView
+                            android:background="@color/colorPrimaryDark"
+                            android:textColor="@color/colorText"
+                            android:text="Account List"
+                            android:textSize="25dp"
+                            android:padding="4dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:background="@color/colorPrimaryDark"
+                            android:textColor="@color/colorText"
+                            android:text="Click to see all registered account in this application"
+                            android:layout_marginTop="4dp"
+                            android:padding="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:background="@color/colorLightPrimary"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+
+                    <LinearLayout
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_weight="1">
+
+                        <ImageButton
+                            android:scaleType="fitXY"
+                            android:background="@color/colorPrimaryDark"
+                            android:src="@android:drawable/ic_menu_add"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:id="@+id/create_account_button" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.7">
+
+                        <TextView
+                            android:background="@color/colorPrimaryDark"
+                            android:textColor="@color/colorText"
+                            android:text="Create Account"
+                            android:textSize="25dp"
+                            android:padding="4dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:background="@color/colorPrimaryDark"
+                            android:textColor="@color/colorText"
+                            android:text="Click to add a new account"
+                            android:layout_marginTop="4dp"
+                            android:padding="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:background="@color/colorLightPrimary"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+
+                    <LinearLayout
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_weight="1">
+
+                        <ImageButton
+                            android:scaleType="fitXY"
+                            android:background="@color/colorPrimaryDark"
+                            android:src="@android:drawable/ic_menu_preferences"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:id="@+id/settings_button"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.7">
+
+                        <TextView
+                            android:background="@color/colorPrimaryDark"
+                            android:textColor="@color/colorText"
+                            android:text="Settings"
+                            android:textSize="25dp"
+                            android:padding="4dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:background="@color/colorPrimaryDark"
+                            android:textColor="@color/colorText"
+                            android:text="Click to open all Settings"
+                            android:layout_marginTop="4dp"
+                            android:padding="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:background="@color/colorLightPrimary"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+
+                    <LinearLayout
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_weight="1">
+
+                        <ImageButton
+                            android:scaleType="fitXY"
+                            android:background="@color/colorPrimaryDark"
+                            android:src="@android:drawable/ic_menu_upload"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:id="@+id/upload_button"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.7">
+
+                        <TextView
+                            android:background="@color/colorPrimaryDark"
+                            android:textColor="@color/colorText"
+                            android:text="Upload Module"
+                            android:textSize="25dp"
+                            android:padding="4dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:background="@color/colorPrimaryDark"
+                            android:textColor="@color/colorText"
+                            android:text="Click to upload new learning module. "
+                            android:layout_marginTop="4dp"
+                            android:padding="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:background="@color/colorLightPrimary"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp">
+
+                <LinearLayout
+                    android:background="@color/colorPrimaryDark"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:scaleType="fitXY"
+                        android:background="@color/colorPrimaryDark"
+                        android:src="@android:drawable/ic_menu_agenda"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:id="@+id/excercise_list_button"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7">
+
+                    <TextView
+                        android:background="@color/colorPrimaryDark"
+                        android:textColor="@color/colorText"
+                        android:text="Exercise List"
+                        android:textSize="25dp"
+                        android:padding="4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:background="@color/colorPrimaryDark"
+                        android:textColor="@color/colorText"
+                        android:text="Click to see all available Questions."
+                        android:layout_marginTop="4dp"
+                        android:padding="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/textView6" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:background="@color/colorLightPrimary"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp">
+
+                <LinearLayout
+                    android:background="@color/colorPrimaryDark"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:scaleType="fitXY"
+                        android:background="@color/colorPrimaryDark"
+                        android:src="@android:drawable/ic_menu_info_details"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:id="@+id/excercise_details_button"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7">
+
+                    <TextView
+                        android:background="@color/colorPrimaryDark"
+                        android:textColor="@color/colorText"
+                        android:text="Exercise Details"
+                        android:textSize="25dp"
+                        android:padding="4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:background="@color/colorPrimaryDark"
+                        android:textColor="@color/colorText"
+                        android:text="Click to see detailed question and multichoice answers from Questionnaire."
+                        android:layout_marginTop="4dp"
+                        android:padding="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
 </TableLayout>

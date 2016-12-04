@@ -47,14 +47,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
         ID =  getIntent().getStringExtra("ID");
         USERNAME = getIntent().getStringExtra("USERNAME");
         FULLNAME = getIntent().getStringExtra("FULLNAME");
         PASSWORD = getIntent().getStringExtra("PASSWORD");
         USERTYPE = getIntent().getStringExtra("USERTYPE");
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        TextView welcomeMessage = (TextView) findViewById(R.id.welcome_message);
+        welcomeMessage.setText("Welcome " + FULLNAME);
+
         String profileInfo;
         int maxName = 20;
         if (FULLNAME.length() > maxName) {
