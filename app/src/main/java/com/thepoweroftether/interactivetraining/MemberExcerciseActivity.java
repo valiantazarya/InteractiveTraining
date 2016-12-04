@@ -72,7 +72,7 @@ public class MemberExcerciseActivity extends AppCompatActivity {
 
         new GetExcerciseDetails().execute();
 
-        //RADIO BUTTON FILTER
+        //RADIO BUTTON ANSWER
         answerGroup = (RadioGroup) findViewById(R.id.answer_group);
         nextButton = (Button) findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new View.OnClickListener() {

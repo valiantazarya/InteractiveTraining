@@ -35,6 +35,7 @@ import java.util.List;
 
 public class AllAccountActivity extends ListActivity {
 
+    private static Boolean InternetConnection = true;
     private ProgressDialog pDialog;
     JSONParser jParser = new JSONParser();
     ArrayList<HashMap<String, String>> accountList;
@@ -70,11 +71,13 @@ public class AllAccountActivity extends ListActivity {
             JSONObject jsonObject = null;
             try {
                 jsonObject = jParser.makeHttpRequest(url_all_accounts, "POST", args);
+
+                Log.d("All accounts: ", jsonObject.toString());
             } catch (IOException e) {
                 Log.d("Networking", e.getLocalizedMessage());
+            } catch (NullPointerException e) {
+                InternetConnection = false;
             }
-
-            Log.d("All accounts: ", jsonObject.toString());
 
             try {
                 int success = jsonObject.getInt(TAG_SUCCESS);
@@ -109,6 +112,8 @@ public class AllAccountActivity extends ListActivity {
                 }
             }catch (JSONException e) {
                 e.printStackTrace();
+            } catch (NullPointerException e) {
+                InternetConnection = false;
             }
 
             return null;
@@ -116,6 +121,15 @@ public class AllAccountActivity extends ListActivity {
 
         @Override
         protected void onPostExecute(String s) {
+            if (!InternetConnection) {
+                finish();
+                Toast.makeText(
+                        AllAccountActivity.this,
+                        "Error! No internet connection",
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+
             pDialog.dismiss();
 
             if (TAG_USERTYPE.equals("1")){

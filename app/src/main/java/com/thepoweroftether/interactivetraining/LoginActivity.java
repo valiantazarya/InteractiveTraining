@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -112,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                     int separator = sOwn.indexOf("|");
                     usernameGet = sOwn.substring(0,separator);
                     passwordGet = sOwn.substring(separator+1);
+                    finish();
                     new GetLoginDetails().execute();
                 }
 
@@ -129,31 +132,6 @@ public class LoginActivity extends AppCompatActivity {
                     usernameGet = usernameEdit.getText().toString();
                     passwordGet = passwordEdit.getText().toString();
 
-            /*AccountContract.AccountDbHelper dbHelper = new AccountContract.AccountDbHelper(LoginActivity.this);
-            SQLiteDatabase db = dbHelper.getReadableDatabase();
-            Cursor cursor = null;
-
-            cursor = db.query(
-                    AccountContract.AccountEntry.TABLE_NAME,
-                    new String[] {
-                            AccountContract.AccountEntry._ID
-                    },
-                    String.format(
-                            "%s = ? AND %s = ?",
-                            AccountContract.AccountEntry.COLUMN_NAME_USERNAME,
-                            AccountContract.AccountEntry.COLUMN_NAME_PASSWORD
-                    ),
-                    new String[] {
-                            username,
-                            password
-                    },
-                    null,
-                    null,
-                    null
-            );
-
-            cursor.moveToFirst();*/
-
                     new GetLoginDetails().execute();
                 }
             });
@@ -169,6 +147,17 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public static boolean isConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        if (connectivityManager != null) {
+            networkInfo = connectivityManager.getActiveNetworkInfo();
+        }
+
+        return networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED;
     }
 
     class GetLoginDetails extends AsyncTask<String, String, String> {
@@ -191,60 +180,77 @@ public class LoginActivity extends AppCompatActivity {
 
                     int success;
                     try {
-                        List<Pair<String, String>> args = new ArrayList<Pair<String, String>>();
-                        args.add(new Pair<>(TAG_USERNAME, usernameGet));
-                        args.add(new Pair<>(TAG_PASSWORD, passwordGet));
-                        JSONObject jsonObject = null;
-                        try {
-                            jsonObject = jsonParser.makeHttpRequest(url_login, "POST", args);
-                        } catch (IOException e) {
-                            Log.d("Networking", e.getLocalizedMessage());
+                        if (!isConnected(LoginActivity.this)){
+                            Intent i = new Intent(LoginActivity.this, LoginActivity.class);
+                            startActivity(i);
+
+                            while (!isConnected(LoginActivity.this)) {
+                                //Wait to connect
+                                Thread.sleep(1000);
+                            }
                         }
 
-                        Log.d("Login details", jsonObject.toString());
-
-                        success = jsonObject.getInt(TAG_SUCCESS);
-                        if(success == 1) {
-                            JSONArray accountObj = jsonObject.getJSONArray(TAG_ACCOUNT);
-                            JSONObject account = accountObj.getJSONObject(0);
-
-                            id = account.getString(TAG_ACCOUNT_ID);
-                            username = account.getString(TAG_USERNAME);
-                            fullname = account.getString(TAG_FULLNAME);
-                            password = account.getString(TAG_PASSWORD);
-                            usertype = account.getString(TAG_USERTYPE);
-
-                            //Login Process
-                            Intent intent;
-                            if (usertype.equals("1")) {
-                                intent = new Intent(LoginActivity.this, AdminActivity.class);
-                            }
-                            else {
-                                intent = new Intent(LoginActivity.this, MainActivity.class);
+                        if (usernameGet.equals("") || passwordGet.equals("")) {
+                            alertMessage = "You cannot submit an empty field(s)";
+                        }
+                        else {
+                            List<Pair<String, String>> args = new ArrayList<Pair<String, String>>();
+                            args.add(new Pair<>(TAG_USERNAME, usernameGet));
+                            args.add(new Pair<>(TAG_PASSWORD, passwordGet));
+                            JSONObject jsonObject = null;
+                            try {
+                                jsonObject = jsonParser.makeHttpRequest(url_login, "POST", args);
+                            } catch (IOException e) {
+                                Log.d("Networking", e.getLocalizedMessage());
                             }
 
-                            //Shared Preferences
+                            Log.d("Login details", jsonObject.toString());
+
+                            success = jsonObject.getInt(TAG_SUCCESS);
+                            if(success == 1) {
+                                JSONArray accountObj = jsonObject.getJSONArray(TAG_ACCOUNT);
+                                JSONObject account = accountObj.getJSONObject(0);
+
+                                id = account.getString(TAG_ACCOUNT_ID);
+                                username = account.getString(TAG_USERNAME);
+                                fullname = account.getString(TAG_FULLNAME);
+                                password = account.getString(TAG_PASSWORD);
+                                usertype = account.getString(TAG_USERTYPE);
+
+                                //Login Process
+                                Intent intent;
+                                if (usertype.equals("1")) {
+                                    intent = new Intent(LoginActivity.this, AdminActivity.class);
+                                }
+                                else {
+                                    intent = new Intent(LoginActivity.this, MainActivity.class);
+                                }
+
+                                //Shared Preferences
                             /*SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString(pUsername, usernameGet);
                             editor.putString(pPassword, passwordGet);
                             editor.commit();*/
 
-                            alertMessage = "Login successful";
+                                alertMessage = "Login successful";
 
-                            intent.putExtra("ID", id);
-                            intent.putExtra("USERNAME", username);
-                            intent.putExtra("FULLNAME", fullname);
-                            intent.putExtra("PASSWORD", password);
-                            intent.putExtra("USERTYPE", usertype);
-                            startActivity(intent);
-                        }
-                        else {
-                            alertMessage = "Username and password doesn't seems to match";
+                                intent.putExtra("ID", id);
+                                intent.putExtra("USERNAME", username);
+                                intent.putExtra("FULLNAME", fullname);
+                                intent.putExtra("PASSWORD", password);
+                                intent.putExtra("USERTYPE", usertype);
+                                startActivity(intent);
+                            }
+                            else {
+                                alertMessage = "Username and password doesn't seems to match";
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (NullPointerException e) {
                         alertMessage = "Login failed! Check your network connection";
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }

@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +16,11 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:windowSoftInputMode="stateVisible|adjustResize">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </activity>
         <activity android:name=".MainActivity" />
         <!-- Splash screen -->
         <activity
@@ -45,7 +50,7 @@
         <activity android:name=".AllExcerciseActivity" />
         <activity android:name=".CreateExcerciseActivity" />
         <activity android:name=".MemberExcerciseActivity" />
-        <activity android:name=".ExcerciseResultActivity"></activity>
+        <activity android:name=".ExcerciseResultActivity" />
     </application>
 
 </manifest>
