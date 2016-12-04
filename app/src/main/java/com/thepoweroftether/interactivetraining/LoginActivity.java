@@ -71,13 +71,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
         //#################################### Auto Login ###################################
-        try {
-            File sdCard = Environment.getExternalStorageDirectory();
-            File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
-            directory.mkdirs();
 
-            File file = new File(directory, "settingAutoLogin.txt");
-            if (file.exists()){
+        File sdCard = Environment.getExternalStorageDirectory();
+        File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
+        directory.mkdirs();
+
+        File file = new File(directory, "settingAutoLogin.txt");
+        if (file.exists()){
+            try {
                 FileInputStream fIn = new FileInputStream(file);
                 InputStreamReader isr = new InputStreamReader(fIn);
 
@@ -113,48 +114,49 @@ public class LoginActivity extends AppCompatActivity {
                     passwordGet = sOwn.substring(separator+1);
                     new GetLoginDetails().execute();
                 }
+
+            } catch (IOException e){
+                e.printStackTrace();
             }
-            else {
-                //sharedpreferences = getSharedPreferences(SESSION_PREFERENCES, Context.MODE_PRIVATE);
+        }
+        else {
+            //sharedpreferences = getSharedPreferences(SESSION_PREFERENCES, Context.MODE_PRIVATE);
 
-                Button loginButton = (Button) findViewById(R.id.login_button);
-                loginButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        usernameGet = usernameEdit.getText().toString();
-                        passwordGet = passwordEdit.getText().toString();
+            Button loginButton = (Button) findViewById(R.id.login_button);
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    usernameGet = usernameEdit.getText().toString();
+                    passwordGet = passwordEdit.getText().toString();
 
-                /*AccountContract.AccountDbHelper dbHelper = new AccountContract.AccountDbHelper(LoginActivity.this);
-                SQLiteDatabase db = dbHelper.getReadableDatabase();
-                Cursor cursor = null;
+            /*AccountContract.AccountDbHelper dbHelper = new AccountContract.AccountDbHelper(LoginActivity.this);
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+            Cursor cursor = null;
 
-                cursor = db.query(
-                        AccountContract.AccountEntry.TABLE_NAME,
-                        new String[] {
-                                AccountContract.AccountEntry._ID
-                        },
-                        String.format(
-                                "%s = ? AND %s = ?",
-                                AccountContract.AccountEntry.COLUMN_NAME_USERNAME,
-                                AccountContract.AccountEntry.COLUMN_NAME_PASSWORD
-                        ),
-                        new String[] {
-                                username,
-                                password
-                        },
-                        null,
-                        null,
-                        null
-                );
+            cursor = db.query(
+                    AccountContract.AccountEntry.TABLE_NAME,
+                    new String[] {
+                            AccountContract.AccountEntry._ID
+                    },
+                    String.format(
+                            "%s = ? AND %s = ?",
+                            AccountContract.AccountEntry.COLUMN_NAME_USERNAME,
+                            AccountContract.AccountEntry.COLUMN_NAME_PASSWORD
+                    ),
+                    new String[] {
+                            username,
+                            password
+                    },
+                    null,
+                    null,
+                    null
+            );
 
-                cursor.moveToFirst();*/
+            cursor.moveToFirst();*/
 
-                        new GetLoginDetails().execute();
-                    }
-                });
-            }
-        } catch (IOException e){
-            e.printStackTrace();
+                    new GetLoginDetails().execute();
+                }
+            });
         }
         //###############################################################################
 
