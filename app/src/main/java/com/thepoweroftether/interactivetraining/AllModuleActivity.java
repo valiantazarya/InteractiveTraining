@@ -88,7 +88,7 @@ public class AllModuleActivity extends ListActivity {
                         map.put(TAG_MODULES_ID, modules_id);
                         map.put(TAG_TITLE, title);
                         map.put(TAG_CAPTION, caption);
-                        map.put(TAG_USERNAME_UPLOAD, username_upload);
+                        map.put(TAG_USERNAME_UPLOAD, "[By : "+username_upload+"]");
 
                         moduleList.add(map);
                     }
@@ -128,8 +128,8 @@ public class AllModuleActivity extends ListActivity {
                             AllModuleActivity.this,
                             moduleList,
                             R.layout.list_modul,
-                            new String[] {TAG_MODULES_ID, TAG_TITLE + " (Uploaded by : " + TAG_USERNAME_UPLOAD + ")", TAG_CAPTION},
-                            new int[]{R.id.module_id, R.id.title_text, R.id.caption_text}
+                            new String[] {TAG_MODULES_ID, TAG_TITLE, TAG_CAPTION, TAG_USERNAME_UPLOAD},
+                            new int[]{R.id.module_id, R.id.title_text, R.id.caption_text, R.id.username_upload_text}
                     );
                         setListAdapter(adapter);
                 }
@@ -142,6 +142,10 @@ public class AllModuleActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_module);
 
+        final String username;
+        Intent i = getIntent();
+        username = i.getStringExtra("USERNAME");
+
         moduleList = new ArrayList<HashMap<String, String>>();
 
         new LoadAllModule().execute();
@@ -152,9 +156,11 @@ public class AllModuleActivity extends ListActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String module_id = ((TextView) view.findViewById(R.id.module_id)).getText().toString();
-                Intent i = new Intent(getApplicationContext(), EditAccountActivity.class);
+                Intent i = new Intent(getApplicationContext(), UploadModuleActivity.class);
 
                 i.putExtra(TAG_MODULES_ID, module_id);
+                i.putExtra("USERNAME", username);
+                i.putExtra("METHOD", "2");
                 startActivityForResult(i, 100);
             }
         });

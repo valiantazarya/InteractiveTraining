@@ -312,7 +312,7 @@
                         android:src="@android:drawable/ic_menu_agenda"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:id="@+id/excercise_list_button"/>
+                        android:id="@+id/module_list_button"/>
 
                 </LinearLayout>
 
@@ -325,7 +325,7 @@
                     <TextView
                         android:background="@color/colorPrimaryDark"
                         android:textColor="@color/colorText"
-                        android:text="Exercise List"
+                        android:text="Module List"
                         android:textSize="25dp"
                         android:padding="4dp"
                         android:layout_width="match_parent"
@@ -334,7 +334,7 @@
                     <TextView
                         android:background="@color/colorPrimaryDark"
                         android:textColor="@color/colorText"
-                        android:text="Click to see all available Questions."
+                        android:text="Click to see all available Modules."
                         android:layout_marginTop="4dp"
                         android:padding="5dp"
                         android:layout_width="match_parent"

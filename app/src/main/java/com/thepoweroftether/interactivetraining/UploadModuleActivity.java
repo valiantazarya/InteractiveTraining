@@ -21,6 +21,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,7 +46,7 @@ public class UploadModuleActivity extends AppCompatActivity {
 
     String fileSize;
     String filter = "PDF";
-    String title, caption, filename, username;
+    public static String title, caption, filename, username, method, module_id, previousId, previousFilename, previousTitle, previousCaption, previousUsername;
     EditText otherFilter, titleEdit, captionEdit;
     TextView uploadText;
     Button uploadButton, pickButton;
@@ -54,14 +55,24 @@ public class UploadModuleActivity extends AppCompatActivity {
     ProgressDialog dialog = null;
 
     String upLoadServerUri = null;
+    String deleteServerUri = null;
 
     /**********  File Path *************/
     //final String uploadFilePath = "/storage/emulated/0/Download/";
     //final String uploadFileName = "Yoona-SNSD-1.jpg";
 
     private static final String url_upload = Server.URL + Server.upload;
+    private static final String url_delete_upload = Server.URL + Server.delete_upload;
     private static final String url_insert_upload = Server.URL + Server.insert_upload;
+    private static final String url_update_upload = Server.URL + Server.update_upload;
+    private static final String url_get_module_details = Server.URL + Server.getModuleDetails;
     private static final String TAG_SUCCESS = "success";
+    private static final String TAG_MODULES = "modules";
+    private static final String TAG_MODULES_ID = "id";
+    private static final String TAG_TITLE = "title";
+    private static final String TAG_CAPTION = "caption";
+    private static final String TAG_FILENAME = "filename";
+    private static final String TAG_USERNAME_UPLOAD = "username_upload";
 
     private static String fileUpload;
 
@@ -76,55 +87,114 @@ public class UploadModuleActivity extends AppCompatActivity {
         //Extra intent
         Intent i = getIntent();
         username = i.getStringExtra("USERNAME");
+        method = i.getStringExtra("METHOD");
 
         uploadButton = (Button)findViewById(R.id.upload_button);
         uploadText  = (TextView)findViewById(R.id.upload_text);
 
         pickButton = (Button)findViewById(R.id.pick_button);
 
-        uploadText.setText("Uploading file path :- ");
+        if (method.equals("1")) {
+            uploadText.setText("Uploading file path :- ");
 
-        /************* Php script path ****************/
-        upLoadServerUri = url_upload;
+            /************* Php script path ****************/
+            upLoadServerUri = url_upload;
 
-        uploadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog = new ProgressDialog(UploadModuleActivity.this);
-                dialog.setMessage("Uploading file");
-                dialog.setIndeterminate(false);
-                dialog.setCancelable(true);
-                dialog.show();
+            uploadButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    titleEdit = (EditText) findViewById(R.id.title_edit);
+                    captionEdit = (EditText) findViewById(R.id.caption_edit);
 
-                new Thread(new Runnable() {
-                    public void run() {
-                        runOnUiThread(new Runnable() {
+                    dialog = new ProgressDialog(UploadModuleActivity.this);
+                    dialog.setMessage("Uploading file");
+                    dialog.setIndeterminate(false);
+                    dialog.setCancelable(false);
+                    dialog.show();
+
+                    title = titleEdit.getText().toString();
+                    caption = captionEdit.getText().toString();
+
+                    if (title.equals("") || caption.equals("") || uploadText.getText().toString().equals("Uploading file path :- ")) {
+                        Toast.makeText(
+                                UploadModuleActivity.this,
+                                "Error! Your cannot submit an empty field(s).",
+                                Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        new InsertUploadFile().execute();
+
+                        new Thread(new Runnable() {
                             public void run() {
-                                uploadText.setText("Uploading started");
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        uploadText.setText("Uploading started");
+                                    }
+                                });
+                                //uploadFile(uploadFilePath + "" + uploadFileName);
+                                uploadFile(fileUpload);
                             }
-                        });
-                        //uploadFile(uploadFilePath + "" + uploadFileName);
-                        uploadFile(fileUpload);
+                        }).start();
                     }
-                }).start();
-
-                titleEdit = (EditText) findViewById(R.id.title_edit);
-                captionEdit = (EditText) findViewById(R.id.caption_edit);
-
-                title = titleEdit.getText().toString();
-                caption = captionEdit.getText().toString();
-
-                if (title.equals("") || caption.equals("")) {
-                    Toast.makeText(
-                            UploadModuleActivity.this,
-                            "Error! Your cannot submit an empty field(s).",
-                            Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    new InsertUploadFile().execute();
                 }
-            }
-        });
+            });
+        } else if (method.equals("2")) {
+            titleEdit = (EditText) findViewById(R.id.title_edit);
+            captionEdit = (EditText) findViewById(R.id.caption_edit);
+            uploadButton.setText("Save");
+
+            module_id = i.getStringExtra("id");
+            new GetModuleDetails().execute();
+
+            /************* Php script path ****************/
+            upLoadServerUri = url_upload;
+            deleteServerUri = url_delete_upload;
+
+            uploadButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    dialog = new ProgressDialog(UploadModuleActivity.this);
+                    dialog.setMessage("Uploading file");
+                    dialog.setIndeterminate(false);
+                    dialog.setCancelable(false);
+                    dialog.show();
+
+                    title = titleEdit.getText().toString();
+                    caption = captionEdit.getText().toString();
+
+                    if (title.equals("") || caption.equals("") || uploadText.getText().toString().equals("Uploading file path :- ")) {
+                        Toast.makeText(
+                                UploadModuleActivity.this,
+                                "Error! Your cannot submit an empty field(s).",
+                                Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        String textUpload = uploadText.getText().toString();
+                        String resultUpload = textUpload.substring(textUpload.indexOf(": ")+2);
+                        if (!previousFilename.equals(resultUpload)) {
+                            new deleteFile().execute();
+
+                            new Thread(new Runnable() {
+                                public void run() {
+                                    runOnUiThread(new Runnable() {
+                                        public void run() {
+                                            uploadText.setText("Uploading started");
+                                        }
+                                    });
+                                    //uploadFile(uploadFilePath + "" + uploadFileName);
+                                    uploadFile(fileUpload);
+                                }
+                            }).start();
+                        } else {
+                            filename = "";
+                            new UpdateUploadFile().execute();
+                        }
+
+                    }
+                }
+            });
+        }
 
         //RADIO BUTTON FILTER
         filterFile = (RadioGroup) findViewById(R.id.filter_file);
@@ -164,7 +234,7 @@ public class UploadModuleActivity extends AppCompatActivity {
                         if (size > 5 * 1024 * 1024) {
                             Toast.makeText(
                                     UploadModuleActivity.this,
-                                    "Cannot add this file, file size is too big",
+                                    "Error! Cannot add this file, file size is too big",
                                     Toast.LENGTH_SHORT
                             ).show();
                         } else {
@@ -176,7 +246,7 @@ public class UploadModuleActivity extends AppCompatActivity {
                             fileUpload = file.toString();
                             int lastIndexSlash = fileUpload.lastIndexOf("/");
                             filename = fileUpload.substring(lastIndexSlash+1);
-                            //filename = "Module_"+title;
+                            //filename = "Module_"+title.replace(" ","_");
                             //filename = fileUpload.substring(fileUpload.charAt());
                             uploadText.setText("Uploading file path :- '"+fileUpload+"' (Size : " + fileSize + ")");
                         }
@@ -336,6 +406,58 @@ public class UploadModuleActivity extends AppCompatActivity {
         } // End else block
     }
 
+    class deleteFile extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(UploadModuleActivity.this);
+            pDialog.setMessage("Deleting Previous file");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            List<Pair<String, String>> args =
+                    new ArrayList<Pair<String, String>>();
+            args.add(new Pair<>("filename", previousFilename));
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = jsonParser.makeHttpRequest(url_delete_upload, "POST", args);
+            }catch (IOException e){
+                Log.d("Networking", e.getLocalizedMessage());
+            }
+
+            Log.d("Create response", jsonObject.toString());
+
+            try{
+                int success = jsonObject.getInt(TAG_SUCCESS);
+                if (success == 1){
+                    alertMessage = "Delete file successful.";
+                    //finish();
+                }
+                else{
+                    alertMessage = "Error! Delete file failed.";
+                }
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            pDialog.dismiss();
+
+            /*Toast.makeText(
+                    getApplicationContext(),
+                    alertMessage,
+                    Toast.LENGTH_SHORT)
+                    .show();*/
+        }
+    }
 
     class InsertUploadFile extends AsyncTask<String, String, String> {
         @Override
@@ -377,6 +499,138 @@ public class UploadModuleActivity extends AppCompatActivity {
             }catch (JSONException e){
                 e.printStackTrace();
             }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            pDialog.dismiss();
+
+            /*Toast.makeText(
+                    getApplicationContext(),
+                    alertMessage,
+                    Toast.LENGTH_SHORT)
+                    .show();*/
+        }
+    }
+
+    class UpdateUploadFile extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(UploadModuleActivity.this);
+            pDialog.setMessage("Saving file");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            List<Pair<String, String>> args =
+                    new ArrayList<Pair<String, String>>();
+            args.add(new Pair<>("id", module_id));
+            args.add(new Pair<>("title", title));
+            args.add(new Pair<>("caption", caption));
+            args.add(new Pair<>("filename", filename));
+            args.add(new Pair<>("username", username));
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = jsonParser.makeHttpRequest(url_update_upload, "POST", args);
+            }catch (IOException e){
+                Log.d("Networking", e.getLocalizedMessage());
+            }
+
+            Log.d("Create response", jsonObject.toString());
+
+            try{
+                int success = jsonObject.getInt(TAG_SUCCESS);
+                if (success == 1){
+                    alertMessage = "Update file successful.";
+                    //finish();
+                }
+                else{
+                    alertMessage = "Error! Update file failed.";
+                }
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            pDialog.dismiss();
+
+            /*Toast.makeText(
+                    getApplicationContext(),
+                    alertMessage,
+                    Toast.LENGTH_SHORT)
+                    .show();*/
+        }
+    }
+
+    class GetModuleDetails extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(UploadModuleActivity.this);
+            pDialog.setMessage("Loading module details");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    int success;
+                    try {
+                        List<Pair<String, String>> args =
+                                new ArrayList<Pair<String, String>>();
+                        args.add(new Pair<>("id", module_id));
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = jsonParser.makeHttpRequest(url_get_module_details, "POST", args);
+                        } catch (IOException e) {
+                            Log.d("Networking", e.getLocalizedMessage());
+                        }
+
+                        Log.d("Create response", jsonObject.toString());
+
+                        success = jsonObject.getInt(TAG_SUCCESS);
+                        if (success == 1) {
+                            JSONArray moduleObj = jsonObject.getJSONArray(TAG_MODULES);
+                            JSONObject module = moduleObj.getJSONObject(0);
+
+                            String id = module.getString(TAG_MODULES_ID);
+                            String title = module.getString(TAG_TITLE);
+                            String caption = module.getString(TAG_CAPTION);
+                            String filename = module.getString(TAG_FILENAME);
+                            String username = module.getString(TAG_USERNAME_UPLOAD);
+
+                            previousId = id;
+                            previousTitle = title;
+                            previousCaption = caption;
+                            previousFilename = filename;
+                            previousUsername = username;
+
+                            uploadText.setText("Filename : "+previousFilename);
+                            titleEdit.setText(previousTitle);
+                            captionEdit.setText(previousCaption);
+
+                        } else {
+                            //Not found
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
             return null;
         }
