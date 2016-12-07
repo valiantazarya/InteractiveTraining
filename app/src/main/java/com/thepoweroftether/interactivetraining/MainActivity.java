@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -122,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     @Override
@@ -176,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
             }
             Intent i = new Intent(MainActivity.this,LoginActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            finish();
             startActivity(i);
         }
 
@@ -208,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject jsonObject = null;
                         try {
                             jsonObject = jsonParser.makeHttpRequest(url_score, "POST", args);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             Log.d("Networking", e.getLocalizedMessage());
                         }
 
@@ -230,8 +231,15 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         TextView txtExercise = (TextView) findViewById(R.id.txtExercise);
-                        txtExercise.setText("Last score : "+scoreInfo);
+                        RatingBar rsNilai = (RatingBar) findViewById(R.id.rsNilai);
+                        try {
+                            rsNilai.setRating(Float.parseFloat(scoreInfo));
+                        }catch (NumberFormatException e){
+                            rsNilai.setRating(0);
+                        }
                     } catch (JSONException e) {
+                        e.printStackTrace();
+                    }catch (Exception e){
                         e.printStackTrace();
                     }
                 }

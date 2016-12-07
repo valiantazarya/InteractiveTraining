@@ -5,19 +5,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.StrictMode;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -31,7 +26,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -71,78 +65,22 @@ public class LoginActivity extends AppCompatActivity {
         final ActionBar actionBar = getActionBar();
         if (actionBar!=null) actionBar.setDisplayShowTitleEnabled(false);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
 
         final EditText usernameEdit = (EditText) findViewById(R.id.username_edit);
         final EditText passwordEdit = (EditText) findViewById(R.id.password_edit);
 
+        Button loginButton = (Button) findViewById(R.id.login_button);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                usernameGet = usernameEdit.getText().toString();
+                passwordGet = passwordEdit.getText().toString();
 
-        //#################################### Auto Login ###################################
-
-        File sdCard = Environment.getExternalStorageDirectory();
-        File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
-        directory.mkdirs();
-
-        File file = new File(directory, "settingAutoLogin.txt");
-        if (file.exists()){
-            try {
-                FileInputStream fIn = new FileInputStream(file);
-                InputStreamReader isr = new InputStreamReader(fIn);
-
-                char[] inputBuffer = new char[READ_BLOCK_SIZE];
-                String s = "";
-                int charRead;
-
-                while ((charRead = isr.read(inputBuffer)) > 0){
-                    String readString = String.copyValueOf(inputBuffer, 0, charRead);
-                    s+= readString;
-                    inputBuffer = new char[READ_BLOCK_SIZE];
-                }
-                isr.close();
-
-                if (s.equals("Enabled")) {
-                    File fileOwn = new File(directory, "ownerInfo.txt");
-                    FileInputStream fInOwn = new FileInputStream(fileOwn);
-                    InputStreamReader isrOwn = new InputStreamReader(fInOwn);
-
-                    char[] inputBufferOwn = new char[READ_BLOCK_SIZE];
-                    String sOwn = "";
-                    int charReadOwn;
-
-                    while ((charReadOwn = isrOwn.read(inputBufferOwn)) > 0){
-                        String readString = String.copyValueOf(inputBufferOwn, 0, charReadOwn);
-                        sOwn+= readString;
-                        inputBufferOwn = new char[READ_BLOCK_SIZE];
-                    }
-                    isrOwn.close();
-
-                    int separator = sOwn.indexOf("|");
-                    usernameGet = sOwn.substring(0,separator);
-                    passwordGet = sOwn.substring(separator+1);
-                    finish();
-                    new GetLoginDetails().execute();
-                }
-
-            } catch (IOException e){
-                e.printStackTrace();
+                new GetLoginDetails().execute();
             }
-        }
-        else {
-            //sharedpreferences = getSharedPreferences(SESSION_PREFERENCES, Context.MODE_PRIVATE);
-
-            Button loginButton = (Button) findViewById(R.id.login_button);
-            loginButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    usernameGet = usernameEdit.getText().toString();
-                    passwordGet = passwordEdit.getText().toString();
-
-                    new GetLoginDetails().execute();
-                }
-            });
-        }
-        //###############################################################################
+        });
 
         TextView registerButton = (TextView) findViewById(R.id.register_button);
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +91,12 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //mengecek file auto login
+        new AutoLogin().execute();
     }
+
+
 
     public static boolean isConnected(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager)
@@ -162,105 +105,95 @@ public class LoginActivity extends AppCompatActivity {
         if (connectivityManager != null) {
             networkInfo = connectivityManager.getActiveNetworkInfo();
         }
-
         return networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED;
     }
 
-    class GetLoginDetails extends AsyncTask<String, String, String> {
+
+
+    class GetLoginDetails extends AsyncTask<Void, String, String> {
+        Boolean fail = false;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme);
+            pDialog = new ProgressDialog(LoginActivity.this);
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             pDialog.setMessage("Logging in");
-            pDialog.setIndeterminate(false);
+            pDialog.setIndeterminate(true);
             pDialog.setCancelable(true);
             pDialog.show();
         }
 
         @Override
-        protected String doInBackground(String... params) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //Looper.prepare();
+        protected String doInBackground(Void... params) {
 
-                    int success;
+            int success;
+            try {
+                if (!isConnected(LoginActivity.this)){
+                    fail=true;
+                    alertMessage = "No network detected,\nPlease check your connection";
+                }else if (usernameGet.equals("") || passwordGet.equals("")) {
+                    alertMessage = "You cannot submit an empty field(s)";
+                }
+                else {
+                    List<Pair<String, String>> args = new ArrayList<Pair<String, String>>();
+                    args.add(new Pair<>(TAG_USERNAME, usernameGet));
+                    args.add(new Pair<>(TAG_PASSWORD, passwordGet));
+                    JSONObject jsonObject = null;
                     try {
-                        if (!isConnected(LoginActivity.this)){
-                            Intent i = new Intent(LoginActivity.this, LoginActivity.class);
-                            startActivity(i);
+                        jsonObject = jsonParser.makeHttpRequest(url_login, "POST", args);
+                    } catch (IOException e) {
+                        Log.d("Networking", e.getLocalizedMessage());
+                    }
 
-                            while (!isConnected(LoginActivity.this)) {
-                                //Wait to connect
-                                Thread.sleep(1000);
-                            }
-                        }
+                    Log.d("Login details", jsonObject.toString());
 
-                        if (usernameGet.equals("") || passwordGet.equals("")) {
-                            alertMessage = "You cannot submit an empty field(s)";
+                    success = jsonObject.getInt(TAG_SUCCESS);
+                    if(success == 1) {
+                        JSONArray accountObj = jsonObject.getJSONArray(TAG_ACCOUNT);
+                        JSONObject account = accountObj.getJSONObject(0);
+
+                        id = account.getString(TAG_ACCOUNT_ID);
+                        username = account.getString(TAG_USERNAME);
+                        fullname = account.getString(TAG_FULLNAME);
+                        password = account.getString(TAG_PASSWORD);
+                        usertype = account.getString(TAG_USERTYPE);
+
+                        //Login Process
+                        Intent intent;
+                        if (usertype.equals("1")) {
+                            intent = new Intent(LoginActivity.this, AdminActivity.class);
                         }
                         else {
-                            List<Pair<String, String>> args = new ArrayList<Pair<String, String>>();
-                            args.add(new Pair<>(TAG_USERNAME, usernameGet));
-                            args.add(new Pair<>(TAG_PASSWORD, passwordGet));
-                            JSONObject jsonObject = null;
-                            try {
-                                jsonObject = jsonParser.makeHttpRequest(url_login, "POST", args);
-                            } catch (IOException e) {
-                                Log.d("Networking", e.getLocalizedMessage());
-                            }
+                            intent = new Intent(LoginActivity.this, MainActivity.class);
+                        }
 
-                            Log.d("Login details", jsonObject.toString());
-
-                            success = jsonObject.getInt(TAG_SUCCESS);
-                            if(success == 1) {
-                                JSONArray accountObj = jsonObject.getJSONArray(TAG_ACCOUNT);
-                                JSONObject account = accountObj.getJSONObject(0);
-
-                                id = account.getString(TAG_ACCOUNT_ID);
-                                username = account.getString(TAG_USERNAME);
-                                fullname = account.getString(TAG_FULLNAME);
-                                password = account.getString(TAG_PASSWORD);
-                                usertype = account.getString(TAG_USERTYPE);
-
-                                //Login Process
-                                Intent intent;
-                                if (usertype.equals("1")) {
-                                    intent = new Intent(LoginActivity.this, AdminActivity.class);
-                                }
-                                else {
-                                    intent = new Intent(LoginActivity.this, MainActivity.class);
-                                }
-
-                                //Shared Preferences
+                        //Shared Preferences
                             /*SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString(pUsername, usernameGet);
                             editor.putString(pPassword, passwordGet);
                             editor.commit();*/
 
-                                alertMessage = "Login successful";
+                        alertMessage = "Login successful";
 
-                                intent.putExtra("ID", id);
-                                intent.putExtra("USERNAME", username);
-                                intent.putExtra("FULLNAME", fullname);
-                                intent.putExtra("PASSWORD", password);
-                                intent.putExtra("USERTYPE", usertype);
-                                startActivity(intent);
-                            }
-                            else {
-                                alertMessage = "Username and password doesn't seems to match";
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (NullPointerException e) {
-                        alertMessage = "Login failed! Check your network connection";
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        intent.putExtra("ID", id);
+                        intent.putExtra("USERNAME", username);
+                        intent.putExtra("FULLNAME", fullname);
+                        intent.putExtra("PASSWORD", password);
+                        intent.putExtra("USERTYPE", usertype);
+                        finish();
+                        startActivityForResult(intent,1);
+                    }
+                    else {
+                        alertMessage = "Username and password doesn't seems to match";
                     }
                 }
-            });
+            } catch (JSONException e) {
+                alertMessage = "Login failed! Check server's availability !";
+                //e.printStackTrace();
+            } catch (NullPointerException e) {
+                alertMessage = "Login failed! Check your network connection";
+                //e.printStackTrace();
+            }
             return null;
         }
 
@@ -275,4 +208,76 @@ public class LoginActivity extends AppCompatActivity {
                     .show();
         }
     }
+
+    class AutoLogin extends AsyncTask<Object, Object, Void> {
+        boolean autoLogin = false;
+        @Override
+        protected Void doInBackground(Object... params) {
+
+            //#################################### Auto Login ###################################
+
+            File sdCard = Environment.getExternalStorageDirectory();
+            File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
+            directory.mkdirs();
+
+            File file = new File(directory, "settingAutoLogin.txt");
+            if (file.exists()){
+                try {
+                    FileInputStream fIn = new FileInputStream(file);
+                    InputStreamReader isr = new InputStreamReader(fIn);
+
+                    char[] inputBuffer = new char[READ_BLOCK_SIZE];
+                    String s = "";
+                    int charRead;
+
+                    while ((charRead = isr.read(inputBuffer)) > 0){
+                        String readString = String.copyValueOf(inputBuffer, 0, charRead);
+                        s+= readString;
+                        inputBuffer = new char[READ_BLOCK_SIZE];
+                    }
+                    isr.close();
+
+                    if (s.equals("Enabled")) {
+                        File fileOwn = new File(directory, "ownerInfo.txt");
+                        FileInputStream fInOwn = new FileInputStream(fileOwn);
+                        InputStreamReader isrOwn = new InputStreamReader(fInOwn);
+
+                        char[] inputBufferOwn = new char[READ_BLOCK_SIZE];
+                        String sOwn = "";
+                        int charReadOwn;
+
+                        while ((charReadOwn = isrOwn.read(inputBufferOwn)) > 0){
+                            String readString = String.copyValueOf(inputBufferOwn, 0, charReadOwn);
+                            sOwn+= readString;
+                            inputBufferOwn = new char[READ_BLOCK_SIZE];
+                        }
+                        isrOwn.close();
+
+                        int separator = sOwn.indexOf("|");
+                        usernameGet = sOwn.substring(0,separator);
+                        passwordGet = sOwn.substring(separator+1);
+                        autoLogin=true;
+                    }
+
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+            else {
+                //sharedpreferences = getSharedPreferences(SESSION_PREFERENCES, Context.MODE_PRIVATE);
+
+            }
+            //###############################################################################
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void s) {
+            super.onPostExecute(s);
+
+            if(autoLogin)
+                new GetLoginDetails().execute();
+        }
+    }
+
 }

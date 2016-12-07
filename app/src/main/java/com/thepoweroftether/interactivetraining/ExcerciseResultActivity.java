@@ -1,11 +1,13 @@
 package com.thepoweroftether.interactivetraining;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -34,4 +36,5 @@ public class ExcerciseResultActivity extends AppCompatActivity {
         else if (Integer.parseInt(score) > 0)
             resultText.setText("Please study more, you only got " + score + " point!");
     }
+
 }
