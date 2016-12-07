@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
@@ -24,33 +25,30 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AllAccountActivity extends ListActivity {
+public class AllModuleActivity extends ListActivity {
 
     private static Boolean InternetConnection = true;
     private ProgressDialog pDialog;
     JSONParser jParser = new JSONParser();
-    ArrayList<HashMap<String, String>> accountList;
+    ArrayList<HashMap<String, String>> moduleList;
 
-    private static String url_all_accounts = Server.URL + Server.readAccount;
+    private static String url_all_modules = Server.URL + Server.readModules;
 
     private static final String TAG_SUCCESS = "success";
-    private static final String TAG_ACCOUNTS = "accounts";
-    private static final String TAG_ACCOUNT_ID = "id";
-    private static final String TAG_USERNAME = "username";
-    private static final String TAG_FULLNAME = "fullname";
-    private static final String TAG_USERTYPE = "usertype";
+    private static final String TAG_MODULES = "modules";
+    private static final String TAG_MODULES_ID = "id";
+    private static final String TAG_TITLE = "title";
+    private static final String TAG_CAPTION = "caption";
+    private static final String TAG_USERNAME_UPLOAD = "username_upload";
 
-    //Usertype Variable
-    public static String tag_usertype = "";
+    JSONArray modules = null;
 
-    JSONArray accounts = null;
-
-    class LoadAllAccount extends AsyncTask<String, String, String> {
+    class LoadAllModule extends AsyncTask<String, String, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(AllAccountActivity.this);
-            pDialog.setMessage("Loading all accounts");
+            pDialog = new ProgressDialog(AllModuleActivity.this);
+            pDialog.setMessage("Loading all modules");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -61,9 +59,9 @@ public class AllAccountActivity extends ListActivity {
             List<Pair<String, String>> args = new ArrayList<Pair<String, String>>();
             JSONObject jsonObject = null;
             try {
-                jsonObject = jParser.makeHttpRequest(url_all_accounts, "POST", args);
+                jsonObject = jParser.makeHttpRequest(url_all_modules, "POST", args);
 
-                Log.d("All accounts: ", jsonObject.toString());
+                Log.d("All module: ", jsonObject.toString());
             } catch (IOException e) {
                 Log.d("Networking", e.getLocalizedMessage());
             } catch (NullPointerException e) {
@@ -74,29 +72,29 @@ public class AllAccountActivity extends ListActivity {
                 int success = jsonObject.getInt(TAG_SUCCESS);
                 if (success == 1) {
                     //account found
-                    accounts = jsonObject.getJSONArray(TAG_ACCOUNTS);
+                    modules = jsonObject.getJSONArray(TAG_MODULES);
 
-                    for (int i=0; i<accounts.length(); i++) {
-                        JSONObject c = accounts.getJSONObject(i);
+                    for (int i=0; i<modules.length(); i++) {
+                        JSONObject c = modules.getJSONObject(i);
 
-                        String account_id = c.getString(TAG_ACCOUNT_ID);
-                        String username = c.getString(TAG_USERNAME);
-                        String fullname = c.getString(TAG_FULLNAME);
-                        String usertype = c.getString(TAG_USERTYPE);
+                        String modules_id = c.getString(TAG_MODULES_ID);
+                        String title = c.getString(TAG_TITLE);
+                        String caption = c.getString(TAG_CAPTION);
+                        String username_upload = c.getString(TAG_USERNAME_UPLOAD);
 
                         HashMap<String, String> map =
                                 new HashMap<String, String>();
 
-                        map.put(TAG_ACCOUNT_ID, account_id);
-                        map.put(TAG_USERNAME, username);
-                        map.put(TAG_FULLNAME, fullname);
-                        map.put(TAG_USERTYPE, usertype);
+                        map.put(TAG_MODULES_ID, modules_id);
+                        map.put(TAG_TITLE, title);
+                        map.put(TAG_CAPTION, caption);
+                        map.put(TAG_USERNAME_UPLOAD, username_upload);
 
-                        accountList.add(map);
+                        moduleList.add(map);
                     }
                 }
                 else {
-                    //no accounts found
+                    //no modules found
                     Intent i = new Intent(getApplicationContext(),AdminActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
@@ -115,7 +113,7 @@ public class AllAccountActivity extends ListActivity {
             if (!InternetConnection) {
                 finish();
                 Toast.makeText(
-                        AllAccountActivity.this,
+                        AllModuleActivity.this,
                         "Error! No internet connection",
                         Toast.LENGTH_SHORT)
                         .show();
@@ -123,26 +121,17 @@ public class AllAccountActivity extends ListActivity {
 
             pDialog.dismiss();
 
-            if (TAG_USERTYPE.equals("1")){
-                tag_usertype = "1";
-            }
-            else if (TAG_USERTYPE.equals("2")){
-                tag_usertype = "2";
-            }
-
-            Log.d("Usertype", tag_usertype);
-
             runOnUiThread(new Runnable(){
                 @Override
                 public void run() {
                     ListAdapter adapter = new SimpleAdapter(
-                            AllAccountActivity.this,
-                            accountList,
-                            R.layout.list_account,
-                            new String[] {TAG_ACCOUNT_ID, TAG_USERNAME, TAG_FULLNAME, TAG_USERTYPE, tag_usertype},
-                            new int[]{R.id.account_id, R.id.username_text, R.id.fullname_text, R.id.usertype, R.id.usertype_name}
+                            AllModuleActivity.this,
+                            moduleList,
+                            R.layout.list_modul,
+                            new String[] {TAG_MODULES_ID, TAG_TITLE + " (Uploaded by : " + TAG_USERNAME_UPLOAD + ")", TAG_CAPTION},
+                            new int[]{R.id.module_id, R.id.title_text, R.id.caption_text}
                     );
-                    setListAdapter(adapter);
+                        setListAdapter(adapter);
                 }
             });
         }
@@ -151,44 +140,29 @@ public class AllAccountActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_account);
+        setContentView(R.layout.activity_all_module);
 
-        accountList = new ArrayList<HashMap<String, String>>();
+        moduleList = new ArrayList<HashMap<String, String>>();
 
-        new LoadAllAccount().execute();
+        new LoadAllModule().execute();
 
         final ListView listView = getListView();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String account_id = ((TextView) view.findViewById(R.id.account_id)).getText().toString();
+                String module_id = ((TextView) view.findViewById(R.id.module_id)).getText().toString();
                 Intent i = new Intent(getApplicationContext(), EditAccountActivity.class);
 
-                i.putExtra(TAG_ACCOUNT_ID, account_id);
-                i.putExtra(TAG_USERTYPE, tag_usertype);
+                i.putExtra(TAG_MODULES_ID, module_id);
                 startActivityForResult(i, 100);
             }
         });
-
-        /*Button editButton = (Button) findViewById(R.id.edit_account_button);
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String account_id = ((TextView) listView.findViewById(R.id.account_id)).getText().toString();
-                Intent i = new Intent(AllAccountActivity.this, EditAccountActivity.class);
-
-                i.putExtra(TAG_ACCOUNT_ID, account_id);
-                startActivityForResult(i, 100);
-                //startActivity(i);
-            }
-        });*/
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if(resultCode == 100){
             Intent i = getIntent();
             finish();

@@ -13,7 +13,8 @@
         android:label="Gobs Enlightenment"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"
+        <activity
+            android:name=".LoginActivity"
             android:theme="@style/LoginTheme"
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
@@ -50,6 +51,7 @@
         <activity android:name=".CreateExcerciseActivity" />
         <activity android:name=".MemberExcerciseActivity" />
         <activity android:name=".ExcerciseResultActivity" />
+        <activity android:name=".AllModuleActivity"></activity>
     </application>
 
 </manifest>

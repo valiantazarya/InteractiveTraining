@@ -22,38 +22,75 @@
         android:layout_marginTop="20dp"
         android:id="@+id/filter_file"
         android:gravity="center"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RadioButton
             android:id="@+id/pdf_radio"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:checked="true"
+            android:background="@drawable/radio_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textColor="@drawable/radio_textcolor_selector"
             android:text="PDF"/>
         <RadioButton
             android:id="@+id/jpg_radio"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/radio_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textColor="@drawable/radio_textcolor_selector"
             android:text="JPG"/>
         <RadioButton
             android:id="@+id/png_radio"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/radio_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textColor="@drawable/radio_textcolor_selector"
             android:text="PNG"/>
         <RadioButton
             android:id="@+id/txt_radio"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/radio_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textColor="@drawable/radio_textcolor_selector"
             android:text="TXT"/>
         <RadioButton
             android:id="@+id/docx_radio"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/radio_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textColor="@drawable/radio_textcolor_selector"
             android:text="DOCX"/>
         <RadioButton
             android:id="@+id/other_radio"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/radio_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textColor="@drawable/radio_textcolor_selector"
             android:text="OTHER"/>
     </RadioGroup>
 

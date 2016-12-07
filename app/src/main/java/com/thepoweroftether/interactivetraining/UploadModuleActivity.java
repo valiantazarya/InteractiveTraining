@@ -161,16 +161,25 @@ public class UploadModuleActivity extends AppCompatActivity {
                     public void fileSelected(File file) {
                         Log.d(getClass().getName(), "selected file " + file.toString());
                         long size = file.length();
-                        if (size/1024/1024 > 1)
-                            fileSize = String.format("%.2f", (((float) size)/1024/1024)) + " MB";
-                        else {
-                            fileSize = String.format("%.2f", (((float) size)/1024)) + " KB";
+                        if (size > 5 * 1024 * 1024) {
+                            Toast.makeText(
+                                    UploadModuleActivity.this,
+                                    "Cannot add this file, file size is too big",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        } else {
+                            if (size/1024/1024 > 1)
+                                fileSize = String.format("%.2f", (((float) size)/1024/1024)) + " MB";
+                            else {
+                                fileSize = String.format("%.2f", (((float) size)/1024)) + " KB";
+                            }
+                            fileUpload = file.toString();
+                            int lastIndexSlash = fileUpload.lastIndexOf("/");
+                            filename = fileUpload.substring(lastIndexSlash+1);
+                            //filename = "Module_"+title;
+                            //filename = fileUpload.substring(fileUpload.charAt());
+                            uploadText.setText("Uploading file path :- '"+fileUpload+"' (Size : " + fileSize + ")");
                         }
-                        fileUpload = file.toString();
-                        int lastIndexSlash = fileUpload.lastIndexOf("/");
-                        filename = fileUpload.substring(lastIndexSlash+1);
-                        //filename = fileUpload.substring(fileUpload.charAt());
-                        uploadText.setText("Uploading file path :- '"+fileUpload+"' (Size : " + fileSize + ")");
                     }
                 });
                 fileDialog.addDirectoryListener(new FileDialog.DirectorySelectedListener() {
