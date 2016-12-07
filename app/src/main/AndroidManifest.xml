@@ -13,9 +13,8 @@
         android:label="Gobs Enlightenment"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".LoginActivity"
-            android:theme="@style/AppTheme"
+        <activity android:name=".LoginActivity"
+            android:theme="@style/LoginTheme"
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

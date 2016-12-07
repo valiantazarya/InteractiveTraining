@@ -28,8 +28,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:colorBackground">@color/colorBackground</item>
         <item name="colorAccent">@color/colorPrimaryDark</item>
-        <item name="android:editTextColor">@color/colorPrimaryDark</item>
-        <item name="android:textColorHint">@color/colorSecondaryText</item>
+        <item name="android:editTextColor">@color/colorSecondaryText</item>
+        <item name="android:textColorHint">@color/colorPrimaryDark</item>
+        <item name="android:positiveButtonText">@color/colorText</item>
+        <item name="android:negativeButtonText">@color/colorText</item>
     </style>
 
     <!-- Register Theme -->
