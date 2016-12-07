@@ -55,6 +55,7 @@ public class AdminActivity extends AppCompatActivity {
         ImageButton create_account_button = (ImageButton) findViewById(R.id.create_account_button);
         ImageButton settings_button = (ImageButton) findViewById(R.id.settings_button);
         ImageButton upload_button = (ImageButton) findViewById(R.id.upload_button);
+        ImageButton module_list_button = (ImageButton) findViewById(R.id.module_list_button);
         ImageButton excercise_details_button = (ImageButton) findViewById(R.id.excercise_details_button);
 
         account_list_button.setOnClickListener(new View.OnClickListener() {
@@ -77,11 +78,22 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
 
+        module_list_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), AllModuleActivity.class);
+                i.putExtra("USERNAME", username);
+                i.putExtra("METHOD", "2");
+                startActivity(i);
+            }
+        });
+
         upload_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), UploadModuleActivity.class);
                 i.putExtra("USERNAME", username);
+                i.putExtra("METHOD", "1");
                 startActivity(i);
             }
         });
