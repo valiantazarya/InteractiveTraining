@@ -132,7 +132,7 @@
 
                     <TextView
                         android:background="@color/colorText"
-                        android:text="Module"
+                        android:text="Click to see all learning modules"
                         android:layout_marginTop="4dp"
                         android:padding="5dp"
                         android:layout_width="match_parent"
@@ -180,18 +180,37 @@
                         android:padding="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1.8"
-                        android:id="@+id/textView3" />
+                        android:layout_weight="1.8"/>
 
-                    <TextView
+                    <LinearLayout
                         android:background="@color/colorText"
-                        android:text="Exercise"
                         android:layout_marginTop="4dp"
                         android:padding="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:id="@+id/txtExercise" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:background="@color/colorText"
+                            android:text="Your Score : "
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.7"
+                            android:id="@+id/txtExercise" />
+
+                        <RatingBar
+                            android:id="@+id/rsNilai"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:numStars="5"
+                            android:layout_weight="1"
+                            android:isIndicator="true"
+                            style="@style/ratingBar"/>
+                    </LinearLayout>
+
+
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

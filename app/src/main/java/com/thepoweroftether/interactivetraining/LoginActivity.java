@@ -188,7 +188,7 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         if (!isConnected(LoginActivity.this)){
                             Intent i = new Intent(LoginActivity.this, LoginActivity.class);
-                            startActivity(i);
+                            startActivityForResult(i,1);
 
                             while (!isConnected(LoginActivity.this)) {
                                 //Wait to connect
@@ -245,7 +245,7 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.putExtra("FULLNAME", fullname);
                                 intent.putExtra("PASSWORD", password);
                                 intent.putExtra("USERTYPE", usertype);
-                                startActivity(intent);
+                                startActivityForResult(intent,1);
                             }
                             else {
                                 alertMessage = "Username and password doesn't seems to match";
@@ -275,4 +275,6 @@ public class LoginActivity extends AppCompatActivity {
                     .show();
         }
     }
+
+
 }

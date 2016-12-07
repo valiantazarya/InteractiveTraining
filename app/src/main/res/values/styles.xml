@@ -50,4 +50,11 @@
     <style name="ActionBarCustom" parent="@style/Theme.AppCompat.Light">
         <item name="icon">@drawable/icon</item>
     </style>
+
+    <!-- RATING START -->
+    <style name="ratingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingstars</item>
+        <item name="android:minHeight">22dip</item>
+        <item name="android:maxHeight">22dip</item>
+    </style>
 </resources>

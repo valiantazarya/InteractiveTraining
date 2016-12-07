@@ -50,7 +50,7 @@
         <activity android:name=".AllExcerciseActivity" />
         <activity android:name=".CreateExcerciseActivity" />
         <activity android:name=".MemberExcerciseActivity" />
-        <activity android:name=".ExcerciseResultActivity" />
+        <activity android:name=".ExcerciseResultActivity"/>
         <activity android:name=".AllModuleActivity"></activity>
     </application>
 

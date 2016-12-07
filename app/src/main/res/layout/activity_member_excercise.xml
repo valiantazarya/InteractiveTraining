@@ -8,46 +8,88 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
+    android:background="@color/colorLightPrimary"
     tools:context="com.thepoweroftether.interactivetraining.MemberExcerciseActivity">
 
-    <TextView
-        android:id="@+id/questionText"
+    <LinearLayout
+        android:background="@color/colorText"
+        android:padding="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:orientation="horizontal">
+        <TextView
+            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/txtNumber"
+            android:textSize="25dp"
+            android:text="1."
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="9"/>
 
-    <RadioGroup
-        android:id="@+id/answer_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        <RadioButton
-            android:id="@+id/answer1"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="RadioButton" />
-        <RadioButton
-            android:checked="false"
-            android:id="@+id/answer2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="RadioButton" />
-        <RadioButton
-            android:checked="false"
-            android:id="@+id/answer3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="RadioButton" />
-        <RadioButton
-            android:checked="false"
-            android:id="@+id/answer4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="RadioButton" />
-    </RadioGroup>
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp"
+                android:padding="5dp"
+                android:id="@+id/questionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Large Text"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_weight="1"/>
+            <RadioGroup
+                android:id="@+id/answer_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                <RadioButton
+                    android:textColor="@color/colorPrimaryDark"
+                    android:id="@+id/answer1"
+                    android:textSize="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="RadioButton" />
+                <RadioButton
+                    android:textColor="@color/colorPrimaryDark"
+                    android:checked="false"
+                    android:id="@+id/answer2"
+                    android:textSize="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="RadioButton" />
+                <RadioButton
+                    android:textColor="@color/colorPrimaryDark"
+                    android:checked="false"
+                    android:id="@+id/answer3"
+                    android:textSize="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="RadioButton" />
+                <RadioButton
+                    android:textColor="@color/colorPrimaryDark"
+                    android:checked="false"
+                    android:id="@+id/answer4"
+                    android:textSize="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="RadioButton" />
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 
     <Button
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/colorText"
         android:id="@+id/nextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

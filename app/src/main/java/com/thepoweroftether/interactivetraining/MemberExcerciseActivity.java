@@ -31,6 +31,8 @@ public class MemberExcerciseActivity extends AppCompatActivity {
     //Alert Message
     public static String alertMessage = "";
 
+    int questionNumber=0;
+
     private static final String url_get_excercise_details = Server.URL + Server.getExcerciseDetails;
     private static final String url_insert_score = Server.URL + Server.insertScore;
     String account_id, excercise_id, username, question, opt_a, opt_b, opt_c, opt_d, answer;
@@ -53,7 +55,7 @@ public class MemberExcerciseActivity extends AppCompatActivity {
     private static int score = 0;
     private static int qid = 1;
     ExcerciseClass.Question currentQ;
-    TextView questionText;
+    TextView txtNumber, questionText;
     RadioButton rda, rdb, rdc, rdd;
     RadioGroup answerGroup;
     Button nextButton;
@@ -137,6 +139,7 @@ public class MemberExcerciseActivity extends AppCompatActivity {
                             JSONArray accountObj = jsonObject.getJSONArray(TAG_EXCERCISE);
                             JSONObject account = accountObj.getJSONObject(0);
 
+                            txtNumber = (TextView) findViewById(R.id.txtNumber);
                             questionText = (TextView) findViewById(R.id.questionText);
                             rda = (RadioButton) findViewById(R.id.answer1);
                             rdb = (RadioButton) findViewById(R.id.answer2);
@@ -144,6 +147,7 @@ public class MemberExcerciseActivity extends AppCompatActivity {
                             rdd = (RadioButton) findViewById(R.id.answer4);
                             nextButton = (Button) findViewById(R.id.nextButton);
 
+                            txtNumber.setText((++questionNumber)+".");
                             rda.setChecked(false);
                             rdb.setChecked(false);
                             rdc.setChecked(false);
