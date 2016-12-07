@@ -6,12 +6,15 @@
     <item
         android:id="@+id/action_settings"
         android:title="Settings"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
         android:icon="@android:drawable/ic_menu_preferences"
         app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/action_logout"
         android:title="Logout"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel"/>
+        android:orderInCategory="2"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        app:showAsAction="ifRoom"/>
 
 </menu>

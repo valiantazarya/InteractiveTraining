@@ -3,6 +3,8 @@ package com.thepoweroftether.interactivetraining;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,17 +17,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    Boolean exit = false;
 
     String ID, USERNAME, FULLNAME, PASSWORD, USERTYPE;
     private static String scoreInfo;
@@ -116,7 +122,27 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
+
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            System.exit(1);
+        } else {
+            Toast.makeText(this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            },2 * 1000);
+
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -135,7 +161,22 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("PASSWORD", PASSWORD);
             startActivity(intent);
         } else if (id == R.id.action_logout) {
-            //action logout
+            try {
+                File sdCard = Environment.getExternalStorageDirectory();
+                File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
+
+                File file = new File(directory, "settingAutoLogin.txt");
+                file.delete();
+
+                File fileOwn = new File(directory, "ownerInfo.txt");
+                fileOwn.delete();
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            Intent i = new Intent(MainActivity.this,LoginActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
