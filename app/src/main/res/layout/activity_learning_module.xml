@@ -4,7 +4,7 @@
     android:id="@+id/activity_learning_module"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorText"
+    android:background="@color/colorLightPrimary"
   tools:context="com.thepoweroftether.interactivetraining.LearningModule">
 
 

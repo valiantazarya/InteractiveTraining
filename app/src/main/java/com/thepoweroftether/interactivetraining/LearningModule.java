@@ -348,7 +348,7 @@ public class LearningModule extends AppCompatActivity {
                 pDialog.setMax(100);
                 pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 pDialog.setProgress(0);
-                pDialog.setCancelable(false);
+                pDialog.setCancelable(true);
                 pDialog.show();
                 return pDialog;
             default:

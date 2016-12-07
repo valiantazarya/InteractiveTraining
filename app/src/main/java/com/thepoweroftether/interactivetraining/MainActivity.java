@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject jsonObject = null;
                         try {
                             jsonObject = jsonParser.makeHttpRequest(url_score, "POST", args);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             Log.d("Networking", e.getLocalizedMessage());
                         }
 
@@ -232,8 +232,14 @@ public class MainActivity extends AppCompatActivity {
 
                         TextView txtExercise = (TextView) findViewById(R.id.txtExercise);
                         RatingBar rsNilai = (RatingBar) findViewById(R.id.rsNilai);
-                        rsNilai.setRating(Float.parseFloat(scoreInfo));
+                        try {
+                            rsNilai.setRating(Float.parseFloat(scoreInfo));
+                        }catch (NumberFormatException e){
+                            rsNilai.setRating(0);
+                        }
                     } catch (JSONException e) {
+                        e.printStackTrace();
+                    }catch (Exception e){
                         e.printStackTrace();
                     }
                 }
