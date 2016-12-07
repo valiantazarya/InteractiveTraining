@@ -96,8 +96,6 @@ public class LoginActivity extends AppCompatActivity {
         new AutoLogin().execute();
     }
 
-
-
     public static boolean isConnected(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -107,8 +105,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         return networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED;
     }
-
-
 
     class GetLoginDetails extends AsyncTask<Void, String, String> {
         Boolean fail = false;
