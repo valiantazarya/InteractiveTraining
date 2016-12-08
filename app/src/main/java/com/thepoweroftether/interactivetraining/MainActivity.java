@@ -184,6 +184,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class GetScoreDetails extends AsyncTask<String, String, String> {
+        float nilai = 0;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -196,60 +198,53 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //Looper.prepare();
+            int success;
+            try {
+                List<Pair<String, String>> args = new ArrayList<Pair<String, String>>();
+                args.add(new Pair<>(TAG_ACCOUNT_ID, ID));
+                args.add(new Pair<>(TAG_METHOD, "1"));
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = jsonParser.makeHttpRequest(url_score, "POST", args);
+                } catch (Exception e) {
+                    Log.d("Networking", e.getLocalizedMessage());
+                }
 
-                    int success;
-                    try {
-                        List<Pair<String, String>> args = new ArrayList<Pair<String, String>>();
-                        args.add(new Pair<>(TAG_ACCOUNT_ID, ID));
-                        args.add(new Pair<>(TAG_METHOD, "1"));
-                        JSONObject jsonObject = null;
-                        try {
-                            jsonObject = jsonParser.makeHttpRequest(url_score, "POST", args);
-                        } catch (Exception e) {
-                            Log.d("Networking", e.getLocalizedMessage());
-                        }
+                Log.d("Single score details", jsonObject.toString());
 
-                        Log.d("Single score details", jsonObject.toString());
+                success = jsonObject.getInt(TAG_SUCCESS);
+                int message = jsonObject.getInt("message");
+                if(success == 1) {
+                    JSONArray accountObj = jsonObject.getJSONArray(TAG_ACCOUNT);
+                    JSONObject account = accountObj.getJSONObject(0);
 
-                        success = jsonObject.getInt(TAG_SUCCESS);
-                        int message = jsonObject.getInt("message");
-                        if(success == 1) {
-                            JSONArray accountObj = jsonObject.getJSONArray(TAG_ACCOUNT);
-                            JSONObject account = accountObj.getJSONObject(0);
-
-                            scoreInfo = account.getString(TAG_SCORE);
-                        }
-                        else {
-                            //Not found
-                            if (message == 0){
-                                scoreInfo = "- [No scores yet]";
-                            }
-                        }
-
-                        TextView txtExercise = (TextView) findViewById(R.id.txtExercise);
-                        RatingBar rsNilai = (RatingBar) findViewById(R.id.rsNilai);
-                        try {
-                            rsNilai.setRating(Float.parseFloat(scoreInfo));
-                        }catch (NumberFormatException e){
-                            rsNilai.setRating(0);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }catch (Exception e){
-                        e.printStackTrace();
+                    scoreInfo = account.getString(TAG_SCORE);
+                }
+                else {
+                    //Not found
+                    if (message == 0){
+                        scoreInfo = "- [No scores yet]";
                     }
                 }
-            });
+
+                try {
+                    nilai =(Float.parseFloat(scoreInfo));
+                }catch (NumberFormatException e){
+                    nilai =0;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
             pDialog.dismiss();
+            RatingBar rsNilai = (RatingBar) findViewById(R.id.rsNilai);
+            rsNilai.setRating(nilai);
         }
     }
 }

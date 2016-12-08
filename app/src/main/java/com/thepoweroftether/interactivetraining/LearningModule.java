@@ -74,6 +74,8 @@ public class LearningModule extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        adapter.data.clear();
+        new LoadAllModules().execute(getApplicationContext());
         adapter.notifyDataSetChanged();
     }
 
@@ -86,8 +88,6 @@ public class LearningModule extends AppCompatActivity {
         listModule = (ListView) findViewById(R.id.listModule);
         moduleItems = new ArrayList<ModuleItem>();
         new LoadAllModules().execute(LearningModule.this);
-
-
     }
 
 

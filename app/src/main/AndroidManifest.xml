@@ -10,7 +10,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_launcher"
-        android:label="Gobs Enlightenment"
+        android:label="Gute Enlightenment"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
