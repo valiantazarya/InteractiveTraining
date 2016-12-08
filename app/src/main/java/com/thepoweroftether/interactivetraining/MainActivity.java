@@ -178,6 +178,9 @@ public class MainActivity extends AppCompatActivity {
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
             startActivity(i);
+        } else if (id == R.id.action_faq) {
+            Intent i = new Intent(MainActivity.this, FAQActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

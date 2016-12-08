@@ -11,10 +11,16 @@
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/action_logout"
-        android:title="Logout"
+        android:id="@+id/action_faq"
+        android:title="FAQ's"
         android:orderInCategory="2"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:icon="@android:drawable/ic_menu_help"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/action_logout"
+        android:title="Logout"
+        android:orderInCategory="3"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        app:showAsAction="ifRoom"/>
 </menu>

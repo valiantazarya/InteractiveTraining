@@ -52,7 +52,8 @@
         <activity android:name=".MemberExcerciseActivity" />
         <activity android:name=".ExcerciseResultActivity" />
         <activity android:name=".AllModuleActivity" />
-        <activity android:name=".FAQActivity"></activity>
+        <activity android:name=".FAQActivity" />
+        <activity android:name=".CreditActivity"></activity>
     </application>
 
 </manifest>
