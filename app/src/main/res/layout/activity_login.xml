@@ -5,15 +5,13 @@
     android:layout_height="fill_parent"
     android:layout_alignParentBottom="true"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:gravity="center"
     tools:context="com.thepoweroftether.interactivetraining.LoginActivity">
 
     <ImageView
-        android:src="@drawable/login_gobs"
+        android:src="@drawable/login_gute"
         android:layout_width="match_parent"
         android:layout_height="286px"/>
 

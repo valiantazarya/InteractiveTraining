@@ -42,7 +42,7 @@ public class SettingActivity extends AppCompatActivity {
 
         try {
             File sdCard = Environment.getExternalStorageDirectory();
-            File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
+            File directory = new File(sdCard.getAbsolutePath() + "/GuteFiles");
             directory.mkdirs();
 
             File file = new File(directory, "settingAutoLogin.txt");
@@ -111,7 +111,7 @@ public class SettingActivity extends AppCompatActivity {
 
                     try {
                         File sdCard = Environment.getExternalStorageDirectory();
-                        File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
+                        File directory = new File(sdCard.getAbsolutePath() + "/GuteFiles");
                         directory.mkdirs();
 
                         File file = new File(directory, "settingAutoLogin.txt");
@@ -148,7 +148,7 @@ public class SettingActivity extends AppCompatActivity {
 
                     try {
                         File sdCard = Environment.getExternalStorageDirectory();
-                        File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
+                        File directory = new File(sdCard.getAbsolutePath() + "/GuteFiles");
 
                         File file = new File(directory, "settingAutoLogin.txt");
                         boolean deleted = file.delete();

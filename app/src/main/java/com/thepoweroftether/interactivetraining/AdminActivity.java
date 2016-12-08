@@ -209,7 +209,7 @@ public class AdminActivity extends AppCompatActivity {
         } else if (id == R.id.action_logout) {
             try {
                 File sdCard = Environment.getExternalStorageDirectory();
-                File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
+                File directory = new File(sdCard.getAbsolutePath() + "/GuteFiles");
 
                 File file = new File(directory, "settingAutoLogin.txt");
                 file.delete();

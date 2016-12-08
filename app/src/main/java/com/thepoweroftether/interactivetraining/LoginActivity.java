@@ -187,7 +187,7 @@ public class LoginActivity extends AppCompatActivity {
                 alertMessage = "Login failed! Check server's availability !";
                 //e.printStackTrace();
             } catch (NullPointerException e) {
-                alertMessage = "Login failed! Check your network connection";
+                alertMessage = "Failed to get User Data!\nAsk Valiant or Adolf for more help!";
                 //e.printStackTrace();
             }
             return null;
@@ -213,7 +213,7 @@ public class LoginActivity extends AppCompatActivity {
             //#################################### Auto Login ###################################
 
             File sdCard = Environment.getExternalStorageDirectory();
-            File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
+            File directory = new File(sdCard.getAbsolutePath() + "/GuteFiles");
             directory.mkdirs();
 
             File file = new File(directory, "settingAutoLogin.txt");

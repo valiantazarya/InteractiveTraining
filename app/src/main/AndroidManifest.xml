@@ -25,7 +25,7 @@
         <!-- Splash screen -->
         <activity
             android:name=".SplashScreen"
-            android:label="Gobs Enlightenment"
+            android:label="Gute Enlightenment"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
