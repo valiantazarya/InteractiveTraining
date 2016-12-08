@@ -56,7 +56,7 @@ public class LearningModule extends AppCompatActivity {
     ListView listModule;
     learningItemAdapter adapter;
 
-    private static String file_url = "http://notes.azarya.xyz/gobs_enlightment/learning_module/";
+    private static String file_url = "http://notes.azarya.xyz/gute_enlightment/learning_module/";
 
     private static final String url_read_module = Server.URL + Server.readModule;
 
@@ -281,7 +281,7 @@ public class LearningModule extends AppCompatActivity {
 
             final ImageButton btnOpen = (ImageButton) vi.findViewById(R.id.btnOpen);
             File sdCard = Environment.getExternalStorageDirectory();
-            File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
+            File directory = new File(sdCard.getAbsolutePath() + "/GuteFiles");
             File file = new File(directory, "/" + filename);
             if (file.exists()) {
                 btnOpen.setOnClickListener(new View.OnClickListener() {
@@ -311,7 +311,7 @@ public class LearningModule extends AppCompatActivity {
     boolean checkFileisDownloaded(String filename) {
         try {
             File sdCard = Environment.getExternalStorageDirectory();
-            File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
+            File directory = new File(sdCard.getAbsolutePath() + "/GuteFiles");
 
             File file = new File(directory, "/" + filename);
 
@@ -326,7 +326,7 @@ public class LearningModule extends AppCompatActivity {
                     startActivity(intent);
                 } catch (ActivityNotFoundException e) {
                     // Instruct the user to install a PDF reader here, or something
-                    Toast.makeText(getApplicationContext(), "Please install any Reader, GOBS!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please install any Reader, GUTE!", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
@@ -342,7 +342,7 @@ public class LearningModule extends AppCompatActivity {
         switch (id) {
             case progress_bar_type:
                 pDialog = new ProgressDialog(this);
-                pDialog.setMessage("Downloading GOBS Module, " +
+                pDialog.setMessage("Downloading GUTE Module, " +
                         "\nPlease Wait..");
                 pDialog.setIndeterminate(false);
                 pDialog.setMax(100);
@@ -385,7 +385,7 @@ public class LearningModule extends AppCompatActivity {
 
                 publishProgress(50);
                 File sdCard = Environment.getExternalStorageDirectory();
-                File directory = new File(sdCard.getAbsolutePath() + "/GobsFiles");
+                File directory = new File(sdCard.getAbsolutePath() + "/GuteFiles");
 
                 publishProgress(60);
                 directory.mkdirs();
