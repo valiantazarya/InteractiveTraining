@@ -45,9 +45,10 @@ public class UploadModuleActivity extends AppCompatActivity {
     JSONParser jsonParser = new JSONParser();
 
     String fileSize;
-    String filter = "PDF";
+    public static Boolean other = false;
+    public static String filter = "PDF";
     public static String title, caption, filename, username, method, module_id, previousId, previousFilename, previousTitle, previousCaption, previousUsername;
-    EditText otherFilter, titleEdit, captionEdit;
+    public EditText otherFilter, titleEdit, captionEdit;
     TextView uploadText;
     Button uploadButton, pickButton;
     RadioGroup filterFile;
@@ -197,6 +198,7 @@ public class UploadModuleActivity extends AppCompatActivity {
         }
 
         //RADIO BUTTON FILTER
+        otherFilter = (EditText) findViewById(R.id.other_filter);
         filterFile = (RadioGroup) findViewById(R.id.filter_file);
         filterFile.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -205,10 +207,9 @@ public class UploadModuleActivity extends AppCompatActivity {
                         filterFile.getCheckedRadioButtonId()
                 );
 
-                otherFilter = (EditText) findViewById(R.id.other_filter);
                 if (selectedRadio.getText().toString().equals("OTHER")){
                     otherFilter.setVisibility(View.VISIBLE);
-                    filter = otherFilter.getText().toString();
+                    other = true;
                 }
                 else {
                     otherFilter.setVisibility(View.GONE);
@@ -222,7 +223,8 @@ public class UploadModuleActivity extends AppCompatActivity {
         pickButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (other)
+                    filter = otherFilter.getText().toString();
                 FileDialog fileDialog;
                 File mPath = new File(Environment.getExternalStorageDirectory() + "//DIR//");
                 fileDialog = new FileDialog(UploadModuleActivity.this, mPath, "." + filter.toLowerCase());
